@@ -15,7 +15,4 @@
 local.properties
 
 /.idea
-
-# Project exclude paths
-/app/
-/gradle/
+/.idea/vcs.xml
