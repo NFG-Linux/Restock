@@ -5,24 +5,42 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FirstFragment">
 
+    <!-- Welcome Screen -->
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.restock.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.restock.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        <!-- Nav to Login Screen -->
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_FirstFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+
+        <!-- Nav to Register Screen -->
+        <action
+            android:id="@+id/action_FirstFragment_to_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+    </fragment>
+
+    <!-- Login Screen -->
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.example.restock.LoginFragment"
+        android.label="Login"
+        tools:layout="@layout/fragment_login">
+    </fragment>
+
+    <!-- Register Screen -->
+    <fragment
+        android:id="@+id/RegisterFragment"
+        android:name="com.example.restock.RegisterFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_RegisterFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
     </fragment>
 </navigation>
