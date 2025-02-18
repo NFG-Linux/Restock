@@ -6,6 +6,12 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="onboarding_text1">Explore the App</string>
+    <string name="onboarding_text2">Register for a hands off approach on shopping!</string>
+    <string name="onboarding_signInButton">Sign In</string>
+    <string name="onboarding_createAccountButton">Create Account</string>
+    <string name="onboarding_appNameLogo">App name logo</string>
+    <string name="onboarding_restockLogo">Restock Logo</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
