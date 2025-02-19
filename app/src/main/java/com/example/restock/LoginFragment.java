@@ -27,6 +27,7 @@ import com.firebase.ui.auth.IdpResponse;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class LoginFragment extends Fragment{
 
     //firebase
