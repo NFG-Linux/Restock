@@ -30,8 +30,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     buildFeatures {
         viewBinding = true
@@ -57,6 +57,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     //TODO: Add dependencies for Firebase products we need
     //https://firebase.google.com/docs/android/setup#available-libraries
-    //authentication
+    //email and password authentication
     implementation("com.google.firebase:firebase-auth")
+    //google auth
+    implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+    implementation("com.google.android.gms:play-services-auth:20.5.0")
 }
