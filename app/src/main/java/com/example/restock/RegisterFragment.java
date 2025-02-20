@@ -69,6 +69,7 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+
         //google auth button listener
         binding.buttonGoogleSignIn.setOnClickListener(v -> startGoogleSignIn());
     }
@@ -78,7 +79,9 @@ public class RegisterFragment extends Fragment {
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(getActivity(), "Successfully registered: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        if(user != null && user.getEmail() != null) {
+                            Toast.makeText(getActivity(), "Successfully registered: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        }
                         //go to login screen since registration was successful
                         NavHostFragment.findNavController(RegisterFragment.this)
                                 .navigate(R.id.action_RegisterFragment_to_LoginFragment);

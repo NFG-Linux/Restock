@@ -26,6 +26,7 @@
     <string name="login_PasswordText">Password</string>
     <string name="login_PasswordHint">enter password</string>
     <string name="login_OrLoginWithText">Or Login With</string>
+    <string name="googleButtonText">Google</string>
 
 
     <string name="lorem_ipsum">
