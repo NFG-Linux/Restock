@@ -30,13 +30,13 @@ public class FirstFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //nav to login screen
-        binding.buttonSignIn.setOnClickListener(v ->
+        binding.onboardingSignIn.setOnClickListener(v ->
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_LoginFragment)
         );
 
         //nav to register screen
-        binding.buttonCreateAccount.setOnClickListener(v ->
+        binding.onboardCreateAccount.setOnClickListener(v ->
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_RegisterFragment)
         );

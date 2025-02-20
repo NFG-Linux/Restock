@@ -34,4 +34,11 @@
         android:text="Create Account"
         android:padding="12dp"
         android:layout_gravity="center_horizontal" />
+
+    <!-- Google login Button -->
+    <Button
+        android:id="@+id/buttonGoogleSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Google Signin" />
 </LinearLayout>

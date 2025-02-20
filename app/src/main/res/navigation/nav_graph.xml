@@ -30,6 +30,10 @@
         android:name="com.example.restock.LoginFragment"
         android.label="Login"
         tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_LoginFragment_to_PantryFragment"
+            app:destination="@id/PantryFragment" />
     </fragment>
 
     <!-- Register Screen -->
@@ -42,5 +46,13 @@
         <action
             android:id="@+id/action_RegisterFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
+    </fragment>
+
+    <!-- Pantry Screen (Home screen) -->
+    <fragment
+        android:id="@+id/PantryFragment"
+        android:name="com.example.restock.PantryFragment"
+        android:label="Pantry"
+        tools:layout="@layout/fragment_pantry">
     </fragment>
 </navigation>
