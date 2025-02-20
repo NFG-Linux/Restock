@@ -161,13 +161,12 @@
         android:fontFamily="@font/inter_18pt_regular"
         android:text="@string/register_OrRegisterWith"
         android:textAlignment="center"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="#A1887F"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_LogInButton"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_LogInButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

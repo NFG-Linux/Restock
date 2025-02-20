@@ -89,7 +89,7 @@
         android:id="@+id/onboardCreateAccount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="6dp"
         android:fontFamily="@font/inter_18pt_regular"
         android:text="@string/onboarding_createAccountButton"
         android:textStyle="bold"
