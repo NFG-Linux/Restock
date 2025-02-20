@@ -12,6 +12,17 @@
     <string name="onboarding_createAccountButton">Create Account</string>
     <string name="onboarding_appNameLogo">App name logo</string>
     <string name="onboarding_restockLogo">Restock Logo</string>
+    <string name="register_Text1">Sign Up</string>
+    <string name="register_EmailText">Email</string>
+    <string name="register_EmailHint">example@gmail.com</string>
+    <string name="register_PasswordText">Create a password</string>
+    <string name="register_PasswordHint">must be 8 characters</string>
+    <string name="register_PasswordConfirmText">Confirm password</string>
+    <string name="register_PasswordConfirmHint">repeat password</string>
+    <string name="register_CheckboxText">I accept the terms and privacy policy</string>
+    <string name="register_LogInButtonText">Log In</string>
+    <string name="register_OrRegisterWith">Or Register with</string>
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

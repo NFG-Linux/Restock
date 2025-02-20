@@ -65,14 +65,19 @@
         app:layout_constraintTop_toBottomOf="@id/onBoardingText1"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/onboardingSignIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:backgroundTint="@color/black"
+        android:background="@drawable/custom_black_button"
+        android:backgroundTint="@null"
+        android:fontFamily="@font/inter_18pt_regular"
         android:text="@string/onboarding_signInButton"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         android:contentDescription="@string/onboarding_signInButton"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/onboardingText2"
@@ -80,15 +85,18 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/onboardCreateAccount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/inter_18pt_regular"
         android:text="@string/onboarding_createAccountButton"
+        android:textStyle="bold"
         android:textColor="@color/black"
+        android:background="@drawable/custom_white_button"
         android:contentDescription="@string/onboarding_createAccountButton"
-        app:strokeWidth="1dp"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/onboardingSignIn"
