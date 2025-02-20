@@ -40,7 +40,7 @@
         />
 
     <EditText
-        android:id="@+id/register_emailInput"
+        android:id="@+id/editTextEmail"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -68,11 +68,11 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_emailInput"
+        app:layout_constraintTop_toBottomOf="@id/editTextEmail"
         />
 
     <EditText
-        android:id="@+id/register_passwordCreateInput"
+        android:id="@+id/editTextPassword"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -99,7 +99,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_passwordCreateInput"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
         />
 
     <EditText
@@ -135,7 +135,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/register_LogInButton"
+        android:id="@+id/buttonSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -157,7 +157,7 @@
         android:id="@+id/register_RegisterWith"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="90dp"
         android:fontFamily="@font/inter_18pt_regular"
         android:text="@string/register_OrRegisterWith"
         android:textAlignment="center"
@@ -166,7 +166,22 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_LogInButton" />
+        app:layout_constraintTop_toBottomOf="@id/buttonSignUp" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonGoogleSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:text="@string/googleButtonText"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_white_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_RegisterWith"
+        app:layout_constraintWidth_percent="0.8"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

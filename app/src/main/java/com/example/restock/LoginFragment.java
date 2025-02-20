@@ -56,9 +56,9 @@ public class LoginFragment extends Fragment{
         mAuth = FirebaseAuth.getInstance();
 
         //Sign In button click
-        binding.buttonLogin.setOnClickListener(v -> {
-            String email = binding.editTextEmail.getText().toString().trim();
-            String password = binding.editTextPassword.getText().toString().trim();
+        binding.loginButton.setOnClickListener(v -> {
+            String email = binding.loginEmailInput.getText().toString().trim();
+            String password = binding.loginPasswordInput.getText().toString().trim();
 
             if (!email.isEmpty() && !password.isEmpty()) {
                 signInUser(email, password);
@@ -69,7 +69,7 @@ public class LoginFragment extends Fragment{
         });
 
         //google signin button
-        binding.buttonGoogleSignIn.setOnClickListener(v -> startGoogleSignIn());
+        binding.loginGoogleButton.setOnClickListener(v -> startGoogleSignIn());
     }
 
     private void signInUser(String email, String password) {
@@ -77,7 +77,9 @@ public class LoginFragment extends Fragment{
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(getActivity(), "Login Success: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        if(user != null && user.getEmail() != null) {
+                            Toast.makeText(getActivity(), "Login Success: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        }
                         //Navigate to PantryFragment
                         NavHostFragment.findNavController(LoginFragment.this)
                                 .navigate(R.id.action_LoginFragment_to_PantryFragment);
@@ -106,7 +108,9 @@ public class LoginFragment extends Fragment{
         if (result.getResultCode() == Activity.RESULT_OK) {
             // Successful signin
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Toast.makeText(getActivity(), "Login Success: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+            if(user != null && user.getEmail() != null) {
+                Toast.makeText(getActivity(), "Login Success: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+            }
             // Navigate to PantryFragment
             NavHostFragment.findNavController(LoginFragment.this)
                     .navigate(R.id.action_LoginFragment_to_PantryFragment);

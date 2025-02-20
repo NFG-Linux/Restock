@@ -40,7 +40,7 @@
         />
 
     <EditText
-        android:id="@+id/login_EmailInput"
+        android:id="@+id/loginEmailInput"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -68,11 +68,11 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_EmailInput"
+        app:layout_constraintTop_toBottomOf="@id/loginEmailInput"
         />
 
     <EditText
-        android:id="@+id/login_PasswordInput"
+        android:id="@+id/loginPasswordInput"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -87,7 +87,7 @@
         app:layout_constraintTop_toBottomOf="@id/login_PasswordText" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_Button"
+        android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_PasswordInput"
+        app:layout_constraintTop_toBottomOf="@id/loginPasswordInput"
         app:layout_constraintWidth_max="350dp"
         />
 
@@ -118,6 +118,23 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_Button" />
+        app:layout_constraintTop_toBottomOf="@id/loginButton" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginGoogleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:text="@string/googleButtonText"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_white_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_OrLoginWith"
+        app:layout_constraintWidth_percent="0.8"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
