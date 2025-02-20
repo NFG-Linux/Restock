@@ -1,44 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     tools:context=".RegisterFragment">
 
-    <!-- Email Input -->
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/register_MainText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter Email"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/inter_18pt_bold"
+        android:text="@string/register_Text1"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/register_emailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/register_EmailText"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/register_MainText"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/register_emailInput"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="@string/register_EmailHint"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
-        android:padding="12dp" />
-
-    <!-- Password Input -->
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Password"
-        android:inputType="textPassword"
-        android:padding="12dp" />
-
-    <!-- Sign-Up Button -->
-    <Button
-        android:id="@+id/buttonSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Account"
         android:padding="12dp"
-        android:layout_gravity="center_horizontal" />
+        android:textColorHint="#757575"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_emailText"
+        />
 
-    <!-- Google login Button -->
-    <Button
-        android:id="@+id/buttonGoogleSignIn"
+    <TextView
+        android:id="@+id/register_passwordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Google Signin" />
-</LinearLayout>
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/register_PasswordText"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_emailInput"
+        />
+
+    <EditText
+        android:id="@+id/register_passwordCreateInput"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="@string/register_PasswordHint"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textColorHint="#757575"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_passwordText" />
+
+    <TextView
+        android:id="@+id/register_passwordConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/register_PasswordConfirmText"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_passwordCreateInput"
+        />
+
+    <EditText
+        android:id="@+id/register_passwordConfirmInput"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="@string/register_PasswordConfirmHint"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textColorHint="#757575"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_passwordConfirm"
+        />
+
+    <CheckBox
+        android:id="@+id/register_Terms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/register_CheckboxText"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_passwordConfirmInput"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/register_LogInButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_black_button"
+        android:backgroundTint="@null"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/register_LogInButtonText"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_Terms"
+        app:layout_constraintWidth_max="350dp"
+        />
+
+    <TextView
+        android:id="@+id/register_RegisterWith"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/register_OrRegisterWith"
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_LogInButton"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
