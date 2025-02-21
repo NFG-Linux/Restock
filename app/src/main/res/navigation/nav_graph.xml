@@ -55,4 +55,6 @@
         android:label="Pantry"
         tools:layout="@layout/fragment_pantry">
     </fragment>
+
+    <!-- Barcode Scanner Screen -->
 </navigation>
