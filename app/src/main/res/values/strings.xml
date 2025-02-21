@@ -1,11 +1,44 @@
 <resources>
-    <string name="app_name">Restock</string>
+    <!-- string.xml -->
+    <string name="app_name">ReStock</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
+
+    <!-- fragments nav -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <!-- toolbar -->
+    <string name="profile_icon_desc">Profile Icon</string>
+    <string name="notification_desc">Notifications</string>
+
+    <!-- pantry title -->
+    <string name="pantry_title">User’s Pantry</string>
+
+    <!-- search bar -->
+    <string name="search_icon_desc">Search</string>
+    <string name="search_hint">Search Pantry..</string>
+    <string name="mic_icon_desc">Voice Search</string>
+    <string name="sort_icon_desc">Sort Pantry</string>
+
+    <!-- footer navigation -->
+    <string name="pantry_icon_desc">Pantry</string>
+    <string name="list_icon_desc">List</string>
+    <string name="store_icon_desc">Store</string>
+    <string name="pantry_label">Pantry</string>
+    <string name="list_label">List</string>
+    <string name="store_label">Store</string>
+
+    <!-- Add Button/Food Item List -->
+    <string name="add_item">Add a new pantry item</string>
+    <string name="food_image_desc">Image of the food item</string>
+    <string name="low_stock_indicator">Indicator showing low stock</string>
+    <string name="quantity_text">Quantity: %d</string>
+    <string name="item_name_example">Apples</string>
+    <string name="item_quantity_example">Quantity: 3</string>
+
+    <!-- Strings used for fragments for navigation -->
     <string name="onboarding_text1">Explore the App</string>
     <string name="onboarding_text2">Register for a hands off approach on shopping!</string>
     <string name="onboarding_signInButton">Sign In</string>
@@ -27,7 +60,6 @@
     <string name="login_PasswordHint">enter password</string>
     <string name="login_OrLoginWithText">Or Login With</string>
     <string name="googleButtonText">Google</string>
-
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
