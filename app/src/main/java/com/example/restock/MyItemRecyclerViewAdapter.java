@@ -1,14 +1,16 @@
 package com.example.restock;
 
+//MyItemRecyclerViewAdapter(list).java
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.View;
+import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.restock.placeholder.PlaceholderContent.PlaceholderItem;
-import com.example.restock.databinding.FragmentListBinding;
+import com.example.restock.databinding.ItemListBinding;
 
 import java.util.List;
 
@@ -25,17 +27,19 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        return new ViewHolder(FragmentListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(ItemListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        PlaceholderItem item = mValues.get(position);
+        holder.mItem = item;
+        holder.mItemName.setText(item.content);
+        holder.mItemImage.setImageResource(R.drawable.ic_img);
     }
 
     @Override
@@ -43,20 +47,23 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
-        public final TextView mContentView;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public final ImageView mItemImage;
+        public final TextView mItemName;
+        public final ImageView mEditIcon;
         public PlaceholderItem mItem;
 
-        public ViewHolder(FragmentListBinding binding) {
+        public ViewHolder(ItemListBinding binding) {
             super(binding.getRoot());
-            mIdView = binding.itemNumber;
-            mContentView = binding.content;
+            mItemImage = binding.itemImage;
+            mItemName = binding.itemName;
+            mEditIcon = binding.editIcon;
         }
 
         @Override
+        @NonNull
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mItemName.getText() + "'";
         }
     }
 }

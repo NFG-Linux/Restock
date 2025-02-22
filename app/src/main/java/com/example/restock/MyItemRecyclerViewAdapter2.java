@@ -1,12 +1,13 @@
 package com.example.restock;
 
-// MyItemRecyclerViewAdapter2.java
+// MyItemRecyclerViewAdapter2(pantry).java
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.restock.placeholder.PlaceholderContent.PlaceholderItem;
@@ -29,15 +30,17 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_pantry, parent, false);
+                .inflate(R.layout.item_pantry, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        PlaceholderItem item = mValues.get(position);
+        holder.mItem = item;
+        holder.itemName.setText(item.content); // Name
+        holder.itemQuantity.setText(holder.itemView.getContext().getString(R.string.quantity_text, Integer.parseInt(item.id))); //
+        holder.itemImage.setImageResource(R.drawable.ic_img);
     }
 
     @Override
@@ -46,20 +49,22 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final ImageView itemImage;
+        public final TextView itemName;
+        public final TextView itemQuantity;
         public PlaceholderItem mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mIdView = itemView.findViewById(R.id.item_number);
-            mContentView = itemView.findViewById(R.id.content);
+            itemImage = itemView.findViewById(R.id.item_image);
+            itemName = itemView.findViewById(R.id.item_name);
+            itemQuantity = itemView.findViewById(R.id.item_quantity);
         }
 
         @Override
         @NonNull
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + itemName.getText() + "'";
         }
     }
 }

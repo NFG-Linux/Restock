@@ -20,7 +20,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider_color"
+        android:background="@color/grey"
         app:layout_constraintTop_toBottomOf="@id/header_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -70,7 +70,8 @@
             android:paddingHorizontal="10dp"
             android:textSize="16sp"
             android:background="@null"
-            android:inputType="text" />
+            android:inputType="text"
+            android:autofillHints="search" />
 
         <ImageView
             android:id="@+id/mic_icon"
@@ -93,7 +94,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider_color"
+        android:background="@color/grey"
         app:layout_constraintTop_toBottomOf="@id/search_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -115,7 +116,7 @@
         android:id="@+id/footer_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider_color"
+        android:background="@color/grey"
         app:layout_constraintBottom_toTopOf="@id/footer_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

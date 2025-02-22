@@ -30,13 +30,17 @@
     <string name="list_label">List</string>
     <string name="store_label">Store</string>
 
-    <!-- Add Button/Food Item List -->
+    <!-- Pantry Item List -->
     <string name="add_item">Add a new pantry item</string>
-    <string name="food_image_desc">Image of the food item</string>
     <string name="low_stock_indicator">Indicator showing low stock</string>
-    <string name="quantity_text">Quantity: %d</string>
+    <string name="quantity_text">Qty: %d</string>
     <string name="item_name_example">Apples</string>
     <string name="item_quantity_example">Quantity: 3</string>
+
+    <!-- Grocery Item List -->
+    <string name="grocery_list">Grocery List</string>
+    <string name="edit_icon_desc">Edit item</string>
+    <string name="item_img_desc">Image of item</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="onboarding_text1">Explore the App</string>
