@@ -62,4 +62,6 @@ dependencies {
     //google auth
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     implementation("com.google.android.gms:play-services-auth:20.5.0")
+    //barcode scanner
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
 }
