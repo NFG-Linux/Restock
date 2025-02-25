@@ -30,8 +30,23 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
+        // Get reference to footer
+        View footer = findViewById(R.id.footer_navigation);
 
+        // Set up navigation controller
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
+        // Listen for navigation changes
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.FirstFragment ||
+                    destination.getId() == R.id.LoginFragment ||
+                    destination.getId() == R.id.RegisterFragment) {
+                footer.setVisibility(View.GONE); // Hide footer on splash, login, and register screens
+            } else {
+                footer.setVisibility(View.VISIBLE); // Show footer everywhere else
+            }                                       // (except whats excluded above, you can do this for the barcode screen as well)
+        });
+
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
@@ -43,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        findViewById(R.id.footer_pantry).setOnClickListener(view -> navigateToFragment(R.id.pantryFragment));
+        findViewById(R.id.footer_list).setOnClickListener(view -> navigateToFragment(R.id.listFragment));
+        findViewById(R.id.footer_store).setOnClickListener(view -> navigateToFragment(R.id.storeFragment));
+    }
+
+    private void navigateToFragment(int fragmentId) {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController.navigate(fragmentId);
     }
 
     @Override

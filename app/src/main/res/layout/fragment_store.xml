@@ -7,7 +7,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StoreFragment">
+    tools:context=".StoreFragment"
+    android:paddingTop="?attr/actionBarSize">
 
     <!-- map fragment -->
     <androidx.fragment.app.FragmentContainerView

@@ -35,7 +35,7 @@
 
         <action
             android:id="@+id/action_LoginFragment_to_PantryFragment"
-            app:destination="@id/PantryFragment" />
+            app:destination="@id/pantryFragment" />
     </fragment>
 
     <!-- Register Screen -->
@@ -52,10 +52,26 @@
 
     <!-- Pantry Screen (Home screen) -->
     <fragment
-        android:id="@+id/PantryFragment"
+        android:id="@+id/pantryFragment"
         android:name="com.example.restock.PantryFragment"
         android:label="Pantry"
         tools:layout="@layout/fragment_pantry">
+    </fragment>
+
+    <!-- Grocery List Screen -->
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.restock.ListFragment"
+        android:label="List"
+        tools:layout="@layout/fragment_list">
+    </fragment>
+
+    <!-- Store Screen -->
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.example.restock.StoreFragment"
+        android:label="Store"
+        tools:layout="@layout/fragment_store">
     </fragment>
 
     <!-- Barcode Scanner Screen -->
