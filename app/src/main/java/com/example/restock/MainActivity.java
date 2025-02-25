@@ -1,5 +1,6 @@
 package com.example.restock;
 
+// MainActivity.java
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

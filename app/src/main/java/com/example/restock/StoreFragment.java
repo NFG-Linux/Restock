@@ -1,5 +1,6 @@
 package com.example.restock;
 
+// Store Fragment.java
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
