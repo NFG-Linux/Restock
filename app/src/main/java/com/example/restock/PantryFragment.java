@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.restock.placeholder.PlaceholderContent;
-//
+
 /**
  * A fragment representing a list of Items.
  */
