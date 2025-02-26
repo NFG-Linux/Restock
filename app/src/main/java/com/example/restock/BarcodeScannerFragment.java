@@ -31,13 +31,22 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+//barcode scanner & firestore
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +68,9 @@ public class BarcodeScannerFragment extends Fragment {
     private TextureView textureView;
     private View barcodeOverlay;
     private BarcodeScanner barcodeScanner;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     private final TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -130,7 +142,8 @@ public class BarcodeScannerFragment extends Fragment {
                 .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
                 .build();
         barcodeScanner = BarcodeScanning.getClient(options);
-
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -278,6 +291,51 @@ public class BarcodeScannerFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Barcode detection failed", e));
+    }
+
+    private void checkBarcodeInDatabase(String barcode) {
+        db.collection("imported_barcodes").document(barcode).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Toast.makeText(getContext(), "Product found: " + documentSnapshot.getString("product_name"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        checkUserCreatedBarcodes(barcode);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error checking imported_barcodes", e));
+    }
+
+    private void checkUserCreatedBarcodes(String barcode) {
+        db.collection("user_created_barcodes").document(barcode).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Toast.makeText(getContext(), "Product found in user database!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        promptUserToAddBarcode(barcode);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error checking user_created_barcodes", e));
+    }
+
+    private void promptUserToAddBarcode(String barcode) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Barcode Not Found")
+                .setMessage("Would you like to add it?")
+                .setPositiveButton("Yes", (dialog, which) -> addBarcodeToUserDatabase(barcode))
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void addBarcodeToUserDatabase(String barcode) {
+        Map<String, Object> barcodeData = new HashMap<>();
+        barcodeData.put("barcode", barcode);
+        barcodeData.put("added_by", auth.getCurrentUser().getUid());
+        barcodeData.put("timestamp", System.currentTimeMillis());
+
+        db.collection("user_created_barcodes").document(barcode)
+                .set(barcodeData)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Barcode added successfully!"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error adding barcode", e));
     }
 
     @Override

@@ -64,4 +64,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.5.0")
     //barcode scanner
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning")
 }
