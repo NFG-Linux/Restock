@@ -50,7 +50,7 @@
 
     <!-- Grocery List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/groceryListRecyclerView"
+        android:id="@+id/listRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/grocery_list_title"
