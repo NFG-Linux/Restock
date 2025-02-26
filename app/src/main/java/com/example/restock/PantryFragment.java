@@ -1,13 +1,16 @@
 package com.example.restock;
 
-//Pantry Fragment.java
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.restock.databinding.FragmentPantryBinding;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +27,8 @@ public class PantryFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 3;
+
+    private FragmentPantryBinding binding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,15 +59,38 @@ public class PantryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pantry, container, false);
+        binding = FragmentPantryBinding.inflate(inflater, container, false);
 
-        // use LinearLayoutManager for a vertical list with one column
-        RecyclerView recyclerView = view.findViewById(R.id.pantryRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //View view = inflater.inflate(R.layout.fragment_pantry_list, container, false);
+        View view = binding.getRoot();
 
         // Set the adapter
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter2(PlaceholderContent.ITEMS));
-
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            }
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapter2(PlaceholderContent.ITEMS));
+        }
         return view;
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //nav to barcode scanner screen
+        binding.barcodeScannerButton.setOnClickListener(v ->
+                NavHostFragment.findNavController(PantryFragment.this)
+                        .navigate(R.id.action_PantryFragment_to_BarcodeScannerFragment)
+        );
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

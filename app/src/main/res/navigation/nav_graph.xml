@@ -56,6 +56,10 @@
         android:name="com.example.restock.PantryFragment"
         android:label="Pantry"
         tools:layout="@layout/fragment_pantry">
+
+        <action
+            android:id="@+id/action_PantryFragment_to_BarcodeScannerFragment"
+            app:destination="@id/BarcodeScannerFragment" />
     </fragment>
 
     <!-- Grocery List Screen -->
@@ -75,4 +79,10 @@
     </fragment>
 
     <!-- Barcode Scanner Screen -->
+    <fragment
+        android:id="@+id/BarcodeScannerFragment"
+        android:name="com.example.restock.BarcodeScannerFragment"
+        android:label="Barcode Scanner"
+        tools:layout="@layout/fragment_barcode_scanner">
+    </fragment>
 </navigation>

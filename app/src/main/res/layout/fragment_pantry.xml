@@ -111,6 +111,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_pantry"/>
 
+    <!-- Barcode Scanner button -->
+    <Button
+        android:id="@+id/barcodeScannerButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text= "Barcode Scanner"
+        android:padding="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/black"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/footer_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <!-- Divider Above Footer -->
     <View
