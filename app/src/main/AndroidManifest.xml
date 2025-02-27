@@ -8,6 +8,10 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <!-- Location Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,7 +24,7 @@
         tools:targetApi="31">
 
         <!--
-             TODO: Before you run your application, you need a Google Maps API key.
+             DONE: Before you run your application, you need a Google Maps API key.
 
              To get one, follow the directions here:
 
@@ -32,7 +36,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="AIzaSyDbVYnE1-zl2yd2Y3ZO5iC88rSmtzjnhCk" />
 
         <activity
             android:name=".MainActivity"
