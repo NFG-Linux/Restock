@@ -101,9 +101,20 @@ public class StoreFragment extends Fragment {
                         if (location != null) {
                             LatLng userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 14f));
-                            googleMap.addMarker(new MarkerOptions().position(userLatLng).title("Curent Location"));
+                            googleMap.addMarker(new MarkerOptions().position(userLatLng).title("Current Location"));
                         }
                     });
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        //clears map references
+        googleMap = null;
+
+        //releases location provider
+        fusedLocationProviderClient = null;
     }
 }
