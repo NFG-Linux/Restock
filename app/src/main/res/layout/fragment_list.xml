@@ -19,6 +19,7 @@
 
     <!-- Divider Below Header -->
     <View
+        android:id="@+id/header_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey"
@@ -36,8 +37,8 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/header_navigation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <!-- Divider Below Grocery List Title -->
     <View
