@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- nav_graph.xml -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
+
+    <!-- Welcome Screen -->
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.example.restock.FirstFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_first">
+
+        <!-- Nav to Login Screen -->
+
+        <action
+            android:id="@+id/action_FirstFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+
+        <!-- Nav to Register Screen -->
+        <action
+            android:id="@+id/action_FirstFragment_to_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+    </fragment>
+
+    <!-- Login Screen -->
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.example.restock.LoginFragment"
+        android.label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_LoginFragment_to_PantryFragment"
+            app:destination="@id/pantryFragment" />
+    </fragment>
+
+    <!-- Register Screen -->
+    <fragment
+        android:id="@+id/RegisterFragment"
+        android:name="com.example.restock.RegisterFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_RegisterFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+    </fragment>
+
+    <!-- Pantry Screen (Home screen) -->
+    <fragment
+        android:id="@+id/pantryFragment"
+        android:name="com.example.restock.PantryFragment"
+        android:label="Pantry"
+        tools:layout="@layout/fragment_pantry">
+
+        <action
+            android:id="@+id/action_PantryFragment_to_BarcodeScannerFragment"
+            app:destination="@id/BarcodeScannerFragment" />
+    </fragment>
+
+    <!-- Grocery List Screen -->
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.restock.ListFragment"
+        android:label="List"
+        tools:layout="@layout/fragment_list">
+    </fragment>
+
+    <!-- Store Screen -->
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.example.restock.StoreFragment"
+        android:label="Store"
+        tools:layout="@layout/fragment_store">
+    </fragment>
+
+    <!-- Barcode Scanner Screen -->
+    <fragment
+        android:id="@+id/BarcodeScannerFragment"
+        android:name="com.example.restock.BarcodeScannerFragment"
+        android:label="Barcode Scanner"
+        tools:layout="@layout/fragment_barcode_scanner">
+    </fragment>
+</navigation>
