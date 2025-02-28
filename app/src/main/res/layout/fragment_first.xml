@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstFragment">
+
+
+    <ImageView
+        android:id="@+id/onboardingMainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:src="@drawable/restock_main_text"
+        android:contentDescription="@string/onboarding_appNameLogo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/onboardingRestockLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/restock_logo1"
+        android:contentDescription="@string/onboarding_restockLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onboardingMainText"
+        />
+
+    <TextView
+        android:id="@+id/onBoardingText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_18pt_bold"
+        android:text="@string/onboarding_text1"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onboardingRestockLogo"
+        />
+
+    <TextView
+        android:id="@+id/onboardingText2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:maxLines="2"
+        android:text="@string/onboarding_text2"
+        android:textAlignment="center"
+        android:textColor="#8D6E63"
+        android:textSize="18sp"
+        android:contentDescription="@string/onboarding_text2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onBoardingText1"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/onboardingSignIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_black_button"
+        android:backgroundTint="@null"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/onboarding_signInButton"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:contentDescription="@string/onboarding_signInButton"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onboardingText2"
+        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/onboardCreateAccount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:text="@string/onboarding_createAccountButton"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:background="@drawable/custom_white_button"
+        android:contentDescription="@string/onboarding_createAccountButton"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onboardingSignIn"
+        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
