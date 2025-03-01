@@ -33,9 +33,11 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:contentDescription="@string/pantry_icon_desc"
-                android:src="@drawable/ic_nav_pantry"
+                android:src="@drawable/footer_ic_house"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true"
+                app:tint="?attr/colorControlNormal"
+                android:background="?attr/selectableItemBackground"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -59,9 +61,11 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/list_icon_desc"
-            android:src="@drawable/ic_nav_list"
+            android:src="@drawable/footer_ic_list"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            app:tint="?attr/colorControlNormal"
+            android:background="?attr/selectableItemBackground"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,9 +89,11 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/store_icon_desc"
-            android:src="@drawable/ic_nav_store"
+            android:src="@drawable/footer_ic_location"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            app:tint="?attr/colorControlNormal"
+            android:background="?attr/selectableItemBackground"/>
 
         <TextView
             android:layout_width="wrap_content"
