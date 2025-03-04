@@ -21,8 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-
-    private ImageView pantryIcon, listIcon, storeIcon; // Declare ImageViews
+    private ImageView pantryIcon, listIcon, storeIcon, profileIcon, notificationIcon; // Declare ImageViews
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,31 +32,44 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
-        // Get reference to footer
+        // Get reference to header and footer
+        View header = findViewById(R.id.header_navigation);
         View footer = findViewById(R.id.footer_navigation);
 
         // Find the ImageView icons
         pantryIcon = findViewById(R.id.footer_pantry);
         listIcon = findViewById(R.id.footer_list);
         storeIcon = findViewById(R.id.footer_store);
+        profileIcon = findViewById(R.id.profile_icon);
+        notificationIcon = findViewById(R.id.notification_icon);
 
-        // Set OnClickListeners with Selection Highlight
+        // setFooterClickListeners
         pantryIcon.setOnClickListener(view -> {
             navigateToFragment(R.id.pantryFragment);
             playBounceAnimation(pantryIcon);
             updateNavSelection(pantryIcon);
         });
-
         listIcon.setOnClickListener(view -> {
             navigateToFragment(R.id.listFragment);
             playBounceAnimation(listIcon);
             updateNavSelection(listIcon);
         });
-
         storeIcon.setOnClickListener(view -> {
             navigateToFragment(R.id.storeFragment);
             playBounceAnimation(storeIcon);
             updateNavSelection(storeIcon);
+        });
+
+        // setHeaderClickListeners
+        profileIcon.setOnClickListener(view -> {
+            navigateToFragment(R.id.profileFragment);
+            playBounceAnimation(profileIcon);
+            updateNavSelection(profileIcon);
+        });
+        notificationIcon.setOnClickListener(view -> {
+            navigateToFragment(R.id.notificationFragment);
+            playBounceAnimation(notificationIcon);
+            updateNavSelection(notificationIcon);
         });
 
         // Set up navigation controller
@@ -65,18 +77,24 @@ public class MainActivity extends AppCompatActivity {
 
         // Listen for navigation changes
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            footer.setVisibility(
-                    (destination.getId() == R.id.FirstFragment ||
-                            destination.getId() == R.id.LoginFragment ||
-                            destination.getId() == R.id.RegisterFragment) ?
-                            View.GONE : View.VISIBLE
-            );
+            boolean hideNavigation = (destination.getId() == R.id.FirstFragment ||
+                    destination.getId() == R.id.LoginFragment ||
+                    destination.getId() == R.id.RegisterFragment ||
+                    destination.getId() == R.id.profileFragment ||  // Hide for profile
+                    destination.getId() == R.id.notificationFragment); // Hide for notifications
 
-            if (footer.getVisibility() == View.VISIBLE) {
+            header.setVisibility(hideNavigation ? View.GONE : View.VISIBLE);
+            footer.setVisibility(hideNavigation ? View.GONE : View.VISIBLE);
+
+            // Update footer navigation highlight
+            if (!hideNavigation) {
                 if (destination.getId() == R.id.pantryFragment) updateNavSelection(pantryIcon);
                 else if (destination.getId() == R.id.listFragment) updateNavSelection(listIcon);
                 else if (destination.getId() == R.id.storeFragment) updateNavSelection(storeIcon);
             }
+
+            if (destination.getId() == R.id.profileFragment) updateNavSelection(profileIcon);
+            else if (destination.getId() == R.id.notificationFragment) updateNavSelection(notificationIcon);
         });
 
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
@@ -95,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         pantryIcon.setColorFilter(defaultColor);
         listIcon.setColorFilter(defaultColor);
         storeIcon.setColorFilter(defaultColor);
+        profileIcon.setColorFilter(defaultColor);
+        notificationIcon.setColorFilter(defaultColor);
 
         selectedIcon.setColorFilter(selectedColor);
     }

@@ -85,4 +85,21 @@
         android:label="Barcode Scanner"
         tools:layout="@layout/fragment_barcode_scanner">
     </fragment>
+
+    <!-- Profile Screen -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.restock.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
+
+    <!-- Notification Screen -->
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.restock.NotificationFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notification" >
+    </fragment>
+
 </navigation>

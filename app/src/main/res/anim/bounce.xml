@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Footer Navigation Bounce Animator -->
+<!-- bounce.xml -->
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <scale xmlns:android="http://schemas.android.com/apk/res/android"
         android:duration="200"
