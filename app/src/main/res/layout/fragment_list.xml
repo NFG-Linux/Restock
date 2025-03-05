@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
     <!-- Include the header -->
-    <include layout="@layout/header_navigation"
+    <include layout="@layout/fragment_header"
         android:id="@+id/header_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
 
     <!-- Footer -->
     <include
-        layout="@layout/footer_navigation"
+        layout="@layout/fragment_footer"
         android:id="@+id/footer_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

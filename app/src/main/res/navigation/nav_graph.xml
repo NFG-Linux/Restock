@@ -7,6 +7,27 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FirstFragment">
 
+    <!-- Global Actions -->
+    <action
+        android:id="@+id/action_global_listFragment"
+        app:destination="@id/listFragment" />
+
+    <action
+        android:id="@+id/action_global_pantryFragment"
+        app:destination="@id/pantryFragment" />
+
+    <action
+        android:id="@+id/action_global_storeFragment"
+        app:destination="@id/storeFragment" />
+
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment" />
+
+    <action
+        android:id="@+id/action_global_notificationFragment"
+        app:destination="@id/notificationFragment" />
+
     <!-- Welcome Screen -->
     <fragment
         android:id="@+id/FirstFragment"
@@ -30,7 +51,7 @@
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.example.restock.LoginFragment"
-        android.label="Login"
+        android:label="Login"
         tools:layout="@layout/fragment_login">
 
         <action
@@ -62,7 +83,7 @@
             app:destination="@id/BarcodeScannerFragment" />
     </fragment>
 
-    <!-- Grocery List Screen -->
+    <!-- List Screen -->
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.restock.ListFragment"
