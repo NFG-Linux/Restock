@@ -53,6 +53,9 @@
     <string name="search_store">Search by street address, city, or zip code..</string>
     <string name="search_button_text">Search</string>
 
+    <!-- back button nav -->
+    <string name="back_button_desc">Back</string>"
+
     <!-- Strings used for fragments for navigation -->
     <string name="onboarding_text1">Explore the App</string>
     <string name="onboarding_text2">Register for a hands off approach on shopping!</string>
