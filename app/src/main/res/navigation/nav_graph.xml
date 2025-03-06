@@ -57,6 +57,10 @@
         <action
             android:id="@+id/action_LoginFragment_to_PantryFragment"
             app:destination="@id/pantryFragment" />
+
+        <action
+            android:id="@+id/action_LoginFragment_to_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
     </fragment>
 
     <!-- Register Screen -->
