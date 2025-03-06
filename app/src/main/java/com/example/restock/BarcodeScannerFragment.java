@@ -190,7 +190,7 @@ public class BarcodeScannerFragment extends Fragment {
                                 String rawValue = barcode.getRawValue();
                                 Log.d(TAG, "Barcode detected: " + rawValue);
                                 barcodeResultTextView.setText("Scanning...");
-                                checkBarcodeInDatabase(rawValue);
+                                checkBarcodeInDatabase(rawValue, 0);
                             } else {
                                 barcodeResultTextView.setText("");
                             }
@@ -254,7 +254,7 @@ public class BarcodeScannerFragment extends Fragment {
 
     }
 
-    private void checkBarcodeInDatabase(String barcode) {
+    private void checkBarcodeInDatabase(String barcode, Integer qty) {
         db.collection("imported_barcodes").document(barcode).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (getActivity() != null) {
@@ -273,8 +273,9 @@ public class BarcodeScannerFragment extends Fragment {
 
                                 showItemDetailsDialog(productName, brand, category, ingredients);
                                 setOverlaySuccess();
+                                addItemToPantry(barcode, productName, qty);
                             } else {
-                                checkUserCreatedBarcodes(barcode);
+                                checkUserCreatedBarcodes(barcode, qty);
                             }
                         });
                     }
@@ -290,7 +291,7 @@ public class BarcodeScannerFragment extends Fragment {
                 });
     }
 
-    private void checkUserCreatedBarcodes(String barcode) {
+    private void checkUserCreatedBarcodes(String barcode, Integer qty) {
         db.collection("user_created_barcodes").document(barcode).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (getActivity() != null) {
@@ -309,6 +310,7 @@ public class BarcodeScannerFragment extends Fragment {
 
                                 showItemDetailsDialog(productName, brand, category, ingredients);
                                 setOverlaySuccess();
+                                addItemToPantry(barcode, productName, qty);
                             } else {
                                 promptUserToAddBarcode(barcode);
                             }
@@ -390,6 +392,10 @@ public class BarcodeScannerFragment extends Fragment {
                 .show();
     }
     private void addItemToUserDatabase(String barcode, String productName, String brand, String category, String ingredients) {
+        if (auth.getCurrentUser() == null) {
+            return;
+        }
+
         Map<String, Object> barcodeData = new HashMap<>();
         barcodeData.put("code", barcode);
         barcodeData.put("product_name", productName);
@@ -422,6 +428,28 @@ public class BarcodeScannerFragment extends Fragment {
                         });
                     }
                 });
+    }
+
+    private void addItemToPantry(String barcode, String productName, Integer qty) {
+        if (auth.getCurrentUser() == null) {
+            return;
+        }
+
+        String userId = auth.getCurrentUser().getUid();
+
+        // Create pantry item document with user ownership
+        Map<String, Object> pantryItem = new HashMap<>();
+        pantryItem.put("code", barcode);
+        pantryItem.put("product_name", productName);
+        pantryItem.put("quantity", qty);
+        pantryItem.put("user_id", userId);  // Ensure only the user can access it
+        pantryItem.put("timestamp", FieldValue.serverTimestamp());
+
+        db.collection("pantry_items")
+                .document(barcode) // ✅ Use barcode as document ID
+                .set(pantryItem)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Item added to pantry: " + productName))
+                .addOnFailureListener(e -> Log.e(TAG, "Error adding to pantry", e));
     }
 
     private void resetScanner() {
