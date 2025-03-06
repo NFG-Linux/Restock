@@ -5,11 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="?attr/actionBarSize">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Include the header -->
-    <include layout="@layout/header_navigation"
+    <include layout="@layout/fragment_header"
         android:id="@+id/header_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -127,7 +126,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <!-- Divider Above Footer -->
     <View
         android:id="@+id/footer_divider"
@@ -140,7 +138,7 @@
 
     <!-- Footer -->
     <include
-        layout="@layout/footer_navigation"
+        layout="@layout/fragment_footer"
         android:id="@+id/footer_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

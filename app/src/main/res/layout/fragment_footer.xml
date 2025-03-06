@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- fragment_footer.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".FooterFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="?attr/colorSurface">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:baselineAligned="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Pantry Button -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/footer_pantry"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/footer_ic_house"
+                    android:contentDescription="@string/pantry_icon_desc"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="@color/footer_icon_selector" />
+
+                <TextView
+                    android:text="@string/pantry_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- List Button -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/footer_list"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/footer_ic_list"
+                    android:contentDescription="@string/list_icon_desc"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="@color/footer_icon_selector"/>
+
+                <TextView
+                    android:text="@string/list_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Store Button -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/footer_store"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/footer_ic_location"
+                    android:contentDescription="@string/store_icon_desc"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="@color/footer_icon_selector"/>
+
+                <TextView
+                    android:text="@string/store_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
+
