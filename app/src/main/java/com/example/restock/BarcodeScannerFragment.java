@@ -45,6 +45,7 @@ import com.google.mlkit.vision.common.InputImage;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.List;
 import java.util.Arrays;
@@ -236,9 +237,6 @@ public class BarcodeScannerFragment extends Fragment {
 
     }
 
-
-
-
     private void checkBarcodeInDatabase(String barcode) {
         db.collection("imported_barcodes").document(barcode).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -308,9 +306,13 @@ public class BarcodeScannerFragment extends Fragment {
 
     private void addBarcodeToUserDatabase(String barcode) {
         Map<String, Object> barcodeData = new HashMap<>();
-        barcodeData.put("barcode", barcode);
-        barcodeData.put("added_by", auth.getCurrentUser().getUid());
-        barcodeData.put("timestamp", System.currentTimeMillis());
+        barcodeData.put("code", barcode);
+        barcodeData.put("product_name", "");
+        barcodeData.put("brand", "");
+        barcodeData.put("category", "");
+        barcodeData.put("ingredients_text", "");
+        barcodeData.put("added_by", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+        barcodeData.put("timestamp", FieldValue.serverTimestamp());
 
         db.collection("user_created_barcodes").document(barcode)
                 .set(barcodeData)
