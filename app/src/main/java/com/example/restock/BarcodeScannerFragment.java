@@ -1,6 +1,8 @@
 package com.example.restock;
 
 import android.graphics.drawable.Drawable;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -80,6 +82,8 @@ public class BarcodeScannerFragment extends Fragment {
     private FirebaseAuth auth;
 
     private TextView barcodeResultTextView;
+
+    private BarcodeAnalyzer barcodeAnalyzerInstance; // pause scanner
 
     private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(),
@@ -178,7 +182,7 @@ public class BarcodeScannerFragment extends Fragment {
                 ImageAnalysis imageAnalyzer = new ImageAnalysis.Builder()
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
-                imageAnalyzer.setAnalyzer(cameraExecutor, new BarcodeAnalyzer(barcodes -> {
+                imageAnalyzer.setAnalyzer(cameraExecutor, barcodeAnalyzerInstance = new BarcodeAnalyzer(barcodes -> { // Store instance
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             if (!barcodes.isEmpty()) {
@@ -210,6 +214,8 @@ public class BarcodeScannerFragment extends Fragment {
 
         private final Listener listener;
 
+        private boolean isScanningEnabled = true; // pause scanner
+
         BarcodeAnalyzer(Listener listener, BarcodeScanner barcodeScanner) {
             this.listener = listener;
             this.barcodeScanner = barcodeScanner;
@@ -222,16 +228,28 @@ public class BarcodeScannerFragment extends Fragment {
         @OptIn(markerClass = androidx.camera.core.ExperimentalGetImage.class)
         @Override
         public void analyze(@NonNull ImageProxy imageProxy) {
+            Log.d(TAG, "analyze: isScanningEnabled = " + isScanningEnabled);
+            if (!isScanningEnabled) {
+                imageProxy.close();
+                return;
+            }
+
             Image mediaImage = Objects.requireNonNull(imageProxy.getImage());
             InputImage inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
             barcodeScanner.process(inputImage)
                     .addOnSuccessListener(barcodes -> {
-                        if (listener != null) {
+                        if (listener != null && !barcodes.isEmpty()) {
                             listener.onBarcodesDetected(barcodes);
+                            Log.d(TAG, "analyze: barcode detected, disabling scanning");
+                            isScanningEnabled = false;
                         }
                     })
                     .addOnFailureListener(e -> Log.e("BarcodeAnalyzer", "Barcode detection failed", e))
                     .addOnCompleteListener(task -> imageProxy.close());
+        }
+
+        public void enableScanning() {
+            isScanningEnabled = true;
         }
 
     }
@@ -242,8 +260,18 @@ public class BarcodeScannerFragment extends Fragment {
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             if (documentSnapshot.exists()) {
-                                barcodeResultTextView.setText("Product found: " + documentSnapshot.getString("product_name"));
-                                Toast.makeText(getContext(), "Product found: " + documentSnapshot.getString("product_name"), Toast.LENGTH_SHORT).show();
+                                String productName = documentSnapshot.getString("product_name");
+                                String brand = documentSnapshot.getString("brand");
+                                String category = documentSnapshot.getString("category");
+                                String ingredients = documentSnapshot.getString("ingredients_text");
+
+                                Log.d(TAG, "Imported Barcode Details:");
+                                Log.d(TAG, "Product Name: " + productName);
+                                Log.d(TAG, "Brand: " + brand);
+                                Log.d(TAG, "Category: " + category);
+                                Log.d(TAG, "Ingredients: " + ingredients);
+
+                                showItemDetailsDialog(productName, brand, category, ingredients);
                                 setOverlaySuccess();
                             } else {
                                 checkUserCreatedBarcodes(barcode);
@@ -268,8 +296,18 @@ public class BarcodeScannerFragment extends Fragment {
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             if (documentSnapshot.exists()) {
-                                barcodeResultTextView.setText("Product found in user database!");
-                                Toast.makeText(getContext(), "Product found in user database!", Toast.LENGTH_SHORT).show();
+                                String productName = documentSnapshot.getString("product_name");
+                                String brand = documentSnapshot.getString("brand");
+                                String category = documentSnapshot.getString("category");
+                                String ingredients = documentSnapshot.getString("ingredients_text");
+
+                                Log.d(TAG, "User Created Barcode Details:");
+                                Log.d(TAG, "Product Name: " + productName);
+                                Log.d(TAG, "Brand: " + brand);
+                                Log.d(TAG, "Category: " + category);
+                                Log.d(TAG, "Ingredients: " + ingredients);
+
+                                showItemDetailsDialog(productName, brand, category, ingredients);
                                 setOverlaySuccess();
                             } else {
                                 promptUserToAddBarcode(barcode);
@@ -278,7 +316,7 @@ public class BarcodeScannerFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    if(getActivity() != null){
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             barcodeResultTextView.setText("");
                             Log.e(TAG, "Error checking user_created_barcodes", e);
@@ -289,50 +327,110 @@ public class BarcodeScannerFragment extends Fragment {
     }
 
     private void promptUserToAddBarcode(String barcode) {
-        if(getActivity() != null){
+        if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Barcode Not Found")
                         .setMessage("Would you like to add it?")
-                        .setPositiveButton("Yes", (dialog, which) -> addBarcodeToUserDatabase(barcode))
-                        .setNegativeButton("No", null)
+                        .setPositiveButton("Yes", (dialog, which) -> showAddBarcodeDialog(barcode))
+                        .setNegativeButton("No", (dialog, which) -> {
+                            setOverlayFailure();
+                            resetScanner();
+                        })
                         .show();
-                setOverlayFailure();
             });
         }
-
     }
 
-    private void addBarcodeToUserDatabase(String barcode) {
+    private void showAddBarcodeDialog(String barcode) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Add Item Details");
+
+
+        final EditText productNameInput = new EditText(getContext());
+        productNameInput.setHint("Product Name");
+        final EditText brandInput = new EditText(getContext());
+        brandInput.setHint("Brand");
+        final EditText categoryInput = new EditText(getContext());
+        categoryInput.setHint("Category");
+        final EditText ingredientsInput = new EditText(getContext());
+        ingredientsInput.setHint("Ingredients");
+
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(productNameInput);
+        layout.addView(brandInput);
+        layout.addView(categoryInput);
+        layout.addView(ingredientsInput);
+        builder.setView(layout);
+
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            String productName = productNameInput.getText().toString();
+            String brand = brandInput.getText().toString();
+            String category = categoryInput.getText().toString();
+            String ingredients = ingredientsInput.getText().toString();
+            addItemToUserDatabase(barcode, productName, brand, category, ingredients);
+            resetScanner();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            setOverlayFailure();
+            resetScanner();
+        });
+
+        builder.show();
+    }
+
+    private void showItemDetailsDialog(String productName, String brand, String category, String ingredients) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Item Details")
+                .setMessage("Product: " + productName + "\nBrand: " + brand + "\nCategory: " + category + "\nIngredients: " + ingredients)
+                .setPositiveButton("OK", (dialog, which) -> resetScanner())
+                .show();
+    }
+    private void addItemToUserDatabase(String barcode, String productName, String brand, String category, String ingredients) {
         Map<String, Object> barcodeData = new HashMap<>();
         barcodeData.put("code", barcode);
-        barcodeData.put("product_name", "");
-        barcodeData.put("brand", "");
-        barcodeData.put("category", "");
-        barcodeData.put("ingredients_text", "");
+        barcodeData.put("product_name", productName);
+        barcodeData.put("brand", brand);
+        barcodeData.put("category", category);
+        barcodeData.put("ingredients_text", ingredients);
         barcodeData.put("added_by", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
         barcodeData.put("timestamp", FieldValue.serverTimestamp());
 
         db.collection("user_created_barcodes").document(barcode)
                 .set(barcodeData)
                 .addOnSuccessListener(aVoid -> {
-                    if(getActivity() != null){
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
-                            barcodeResultTextView.setText("Barcode Added!");
-                            Log.d(TAG, "Barcode added successfully!");
+                            barcodeResultTextView.setText("Item Added!");
+                            Log.d(TAG, "Item added successfully!");
                             setOverlaySuccess();
+
+
+                            showItemDetailsDialog(productName, brand, category, ingredients);
                         });
                     }
                 })
                 .addOnFailureListener(e -> {
-                    if(getActivity() != null){
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             barcodeResultTextView.setText("");
-                            Log.e(TAG, "Error adding barcode", e);
+                            Log.e(TAG, "Error adding item", e);
                             setOverlayFailure();
                         });
                     }
                 });
+    }
+
+    private void resetScanner() {
+        if (barcodeAnalyzerInstance != null) {
+            Log.d(TAG, "resetScanner: Enabling scanning");
+            barcodeAnalyzerInstance.enableScanning();
+        } else {
+            Log.d(TAG, "resetScanner: barcodeAnalyzerInstance is null");
+        }
     }
 
     private void setOverlaySuccess(){
