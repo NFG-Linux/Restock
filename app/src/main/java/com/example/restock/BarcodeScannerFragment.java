@@ -205,7 +205,6 @@ public class BarcodeScannerFragment extends Fragment {
         }, ContextCompat.getMainExecutor(requireContext()));
     }
 
-
     private static class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
         private final BarcodeScanner barcodeScanner;
 
