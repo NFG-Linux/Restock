@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 //firebase auth
@@ -70,6 +71,11 @@ public class LoginFragment extends Fragment{
 
         //google signin button
         binding.loginGoogleButton.setOnClickListener(v -> startGoogleSignIn());
+
+        //Signup link
+        binding.signupLink.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_LoginFragment_to_RegisterFragment);
+        });
     }
 
     private void signInUser(String email, String password) {

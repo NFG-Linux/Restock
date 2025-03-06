@@ -78,6 +78,8 @@
     <string name="login_PasswordHint">enter password</string>
     <string name="login_OrLoginWithText">Or Login With</string>
     <string name="googleButtonText">Google</string>
+    <string name="login_signup_link">Don\'t have an account? Sign up</string>
+    <string name="register_login_link">Already have an account? Log in</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
