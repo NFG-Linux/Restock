@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Menu for Floating Action Button/fab_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_scan_item"
+        android:title="Scan Item" />
+    <item
+        android:id="@+id/menu_add_item"
+        android:title="Manually Add Item" />
+</menu>

@@ -1,5 +1,6 @@
 package com.example.restock;
 
+// PantryFragment.java
 import android.content.Context;
 import android.os.Bundle;
 
@@ -15,6 +16,8 @@ import com.example.restock.databinding.FragmentPantryBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.widget.PopupMenu;
 
 import com.example.restock.placeholder.PlaceholderContent;
 
@@ -23,28 +26,11 @@ import com.example.restock.placeholder.PlaceholderContent;
  */
 public class PantryFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 3;
-
     private FragmentPantryBinding binding;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public PantryFragment() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static PantryFragment newInstance(int columnCount) {
-        PantryFragment fragment = new PantryFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -57,7 +43,7 @@ public class PantryFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentPantryBinding.inflate(inflater, container, false);
 
@@ -81,11 +67,26 @@ public class PantryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //nav to barcode scanner screen
-        binding.barcodeScannerButton.setOnClickListener(v ->
-                NavHostFragment.findNavController(PantryFragment.this)
-                        .navigate(R.id.action_PantryFragment_to_BarcodeScannerFragment)
-        );
+        // Floating Action Button with Menu
+        FloatingActionButton fab = binding.addButton;
+        fab.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(getContext(), v);
+            popup.getMenuInflater().inflate(R.menu.fab_menu, popup.getMenu());
+
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.menu_scan_item) {
+                    NavHostFragment.findNavController(PantryFragment.this)
+                            .navigate(R.id.action_PantryFragment_to_BarcodeScannerFragment);
+                    return true;
+                } else if (item.getItemId() == R.id.menu_add_item) {
+                    // Placeholder for manual item addition pop-up
+                    // Show manual add modal here in the next step
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
+        });
     }
 
     @Override

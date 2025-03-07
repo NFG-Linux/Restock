@@ -1,13 +1,16 @@
 package com.example.restock;
 
-import android.graphics.drawable.Drawable;
+// BarcodeScannerFragment.java
+// import android.graphics.drawable.Drawable;
 import android.widget.EditText;
+// import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
+// import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,12 +21,12 @@ import android.widget.Toast;
 
 import androidx.annotation.OptIn;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ExperimentalGetImage;
+// import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
+// import androidx.lifecycle.LifecycleOwner;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -37,6 +40,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 // Barcode scanner & Firestore
 import androidx.appcompat.app.AlertDialog;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
@@ -45,32 +50,22 @@ import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentSnapshot;
+// import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 
 import java.util.List;
-import java.util.Arrays;
+// import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutionException;
+// import java.util.concurrent.ExecutionException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BarcodeScannerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BarcodeScannerFragment extends Fragment {
 
-
     private static final String TAG = "BarcodeScannerFragment";
-
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private ProcessCameraProvider cameraProvider;
     private PreviewView previewView;
@@ -99,32 +94,10 @@ public class BarcodeScannerFragment extends Fragment {
     public BarcodeScannerFragment() {
         // Required empty public constructor
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BarcodeScannerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BarcodeScannerFragment newInstance(String param1, String param2) {
-        BarcodeScannerFragment fragment = new BarcodeScannerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
@@ -165,6 +138,14 @@ public class BarcodeScannerFragment extends Fragment {
                 startCamera();
             }
         }
+
+        // back button - angie
+        ImageView backButton = view.findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            navController.navigateUp(); // Go back to the previous screen
+        });
+
     }
 
     @SuppressLint("MissingPermission")
