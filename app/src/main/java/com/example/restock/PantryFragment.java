@@ -1,7 +1,9 @@
 package com.example.restock;
 
 // PantryFragment.java
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,13 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restock.databinding.FragmentPantryBinding;
 
+import android.speech.RecognizerIntent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.example.restock.placeholder.PlaceholderContent;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +41,7 @@ public class PantryFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 3;
     private FragmentPantryBinding binding;
+    private static final int REQUEST_CODE_SPEECH_INPUT = 100;
 
     public PantryFragment() {
     }
@@ -67,6 +80,29 @@ public class PantryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Mic Icon Click
+        ImageView micIcon = binding.searchBar.findViewById(R.id.mic_icon);
+        EditText searchInput = binding.searchBar.findViewById(R.id.search_input);
+
+        // Load bounce animation
+        final Animation bounceAnim = AnimationUtils.loadAnimation(getContext(), R.anim.bounce);
+
+        micIcon.setOnClickListener(v -> {
+            micIcon.startAnimation(bounceAnim); // bounce animation
+
+            // voice recognition intent
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak your search");
+
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "Speech Recognition Not Supported", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         // Floating Action Button with Menu
         FloatingActionButton fab = binding.addButton;
         fab.setOnClickListener(v -> {
@@ -87,6 +123,17 @@ public class PantryFragment extends Fragment {
             });
             popup.show();
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SPEECH_INPUT && resultCode == Activity.RESULT_OK && data != null) {
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (result != null && !result.isEmpty()) {
+                binding.searchInput.setText(result.get(0));
+            }
+        }
     }
 
     @Override

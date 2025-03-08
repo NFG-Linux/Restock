@@ -86,8 +86,8 @@
             android:id="@+id/sort_icon"
             android:layout_width="32dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_sort"
-            android:contentDescription="@string/sort_icon_desc"
+            android:src="@drawable/ic_filter"
+            android:contentDescription="@string/filter_icon_desc"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
