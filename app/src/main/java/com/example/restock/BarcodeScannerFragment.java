@@ -224,7 +224,10 @@ public class BarcodeScannerFragment extends Fragment {
                             isScanningEnabled = false;
                         }
                     })
-                    .addOnFailureListener(e -> Log.e("BarcodeAnalyzer", "Barcode detection failed", e))
+                    .addOnFailureListener(e -> {
+                        Log.e("BarcodeAnalyzer", "Barcode detection failed", e);
+                        Log.d(TAG, "BarcodeAnalyzer: Barcode processing failed");
+                    })
                     .addOnCompleteListener(task -> imageProxy.close());
         }
 
@@ -266,6 +269,8 @@ public class BarcodeScannerFragment extends Fragment {
                             barcodeResultTextView.setText("");
                             Log.e(TAG, "Error checking imported_barcodes", e);
                             setOverlayFailure();
+                            Log.d(TAG, "Database check failed, resetting scanner (imported_barcodes)");
+                            resetScanner();
                         });
                     }
                 });
@@ -292,6 +297,7 @@ public class BarcodeScannerFragment extends Fragment {
                                 setOverlaySuccess();
                                 addItemToPantry(barcode, productName, qty);
                             } else {
+                                setOverlayFailure();
                                 promptUserToAddBarcode(barcode);
                             }
                         });
@@ -303,6 +309,8 @@ public class BarcodeScannerFragment extends Fragment {
                             barcodeResultTextView.setText("");
                             Log.e(TAG, "Error checking user_created_barcodes", e);
                             setOverlayFailure();
+                            Log.d(TAG, "Database check failed, resetting scanner (user_created_barcodes)");
+                            resetScanner();
                         });
                     }
                 });
@@ -311,15 +319,16 @@ public class BarcodeScannerFragment extends Fragment {
     private void promptUserToAddBarcode(String barcode) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                new AlertDialog.Builder(getContext())
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                         .setTitle("Barcode Not Found")
                         .setMessage("Would you like to add it?")
                         .setPositiveButton("Yes", (dialog, which) -> showAddBarcodeDialog(barcode))
                         .setNegativeButton("No", (dialog, which) -> {
                             setOverlayFailure();
-                            resetScanner();
+                            Log.d(TAG, "showAddBarcodeDialog no button pressed");
                         })
-                        .show();
+                        .setOnDismissListener(dialogInterface -> resetScanner());
+                builder.show();
             });
         }
     }
@@ -359,6 +368,7 @@ public class BarcodeScannerFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialog, which) -> {
             setOverlayFailure();
             resetScanner();
+            Log.d(TAG, "showAddBarcodeDialog cancel button pressed");
         });
 
         builder.show();
@@ -371,6 +381,7 @@ public class BarcodeScannerFragment extends Fragment {
                 .setPositiveButton("OK", (dialog, which) -> resetScanner())
                 .show();
     }
+
     private void addItemToUserDatabase(String barcode, String productName, String brand, String category, String ingredients) {
         if (auth.getCurrentUser() == null) {
             return;
@@ -393,8 +404,6 @@ public class BarcodeScannerFragment extends Fragment {
                             barcodeResultTextView.setText("Item Added!");
                             Log.d(TAG, "Item added successfully!");
                             setOverlaySuccess();
-
-
                             showItemDetailsDialog(productName, brand, category, ingredients);
                         });
                     }
@@ -439,20 +448,37 @@ public class BarcodeScannerFragment extends Fragment {
         } else {
             Log.d(TAG, "resetScanner: barcodeAnalyzerInstance is null");
         }
+        Log.d(TAG, "resetScanner() called");
+        resetOverlay();
     }
 
-    private void setOverlaySuccess(){
-        if(getActivity() != null){
-            getActivity().runOnUiThread(() ->{
-                barcodeOverlay.setBackgroundResource(R.drawable.barcode_outline_success);
+    private void setOverlaySuccess() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                Log.d(TAG, "setOverlaySuccess() called");
+                barcodeOverlay.setSelected(true);
+                barcodeOverlay.setActivated(false);
             });
         }
     }
 
-    private void setOverlayFailure(){
-        if(getActivity() != null){
-            getActivity().runOnUiThread(() ->{
-                barcodeOverlay.setBackgroundResource(R.drawable.barcode_outline_failure);
+    private void setOverlayFailure() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                Log.d(TAG, "setOverlayFailure() called");
+                resetOverlay();
+                barcodeOverlay.setSelected(false);
+                barcodeOverlay.setActivated(true);
+            });
+        }
+    }
+
+    private void resetOverlay(){
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                Log.d(TAG, "resetOverlay() called");
+                barcodeOverlay.setSelected(false);
+                barcodeOverlay.setActivated(false);
             });
         }
     }
