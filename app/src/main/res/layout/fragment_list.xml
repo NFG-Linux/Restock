@@ -38,16 +38,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-
-    <!-- Divider Below Grocery List Title -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey"
-        app:layout_constraintTop_toBottomOf="@id/grocery_list_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <!-- Grocery List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listRecyclerView"

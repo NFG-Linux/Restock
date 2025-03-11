@@ -11,8 +11,8 @@
     <!-- Item Image -->
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/img_placeholder"
         android:contentDescription="@string/item_img_desc"
         android:layout_marginEnd="12dp"/>
@@ -30,8 +30,8 @@
     <!-- Edit Icon -->
     <ImageView
         android:id="@+id/edit_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:background="@drawable/box_background"
         android:padding="8dp"
         android:src="@drawable/edit_ic"
