@@ -36,7 +36,7 @@
         android:id="@+id/barcode_overlay"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:background="@drawable/barcode_outline"
+        android:background="@drawable/barcode_overlay"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
