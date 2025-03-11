@@ -91,15 +91,6 @@
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
-    <!-- Divider Below Search Bar -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey"
-        app:layout_constraintTop_toBottomOf="@id/search_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <!-- Food Item List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pantryRecyclerView"
