@@ -640,5 +640,4 @@ public class BarcodeScannerFragment extends Fragment {
             cameraExecutor.shutdown();
         }
     }
-
 }
