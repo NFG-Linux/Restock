@@ -393,12 +393,20 @@ public class BarcodeScannerFragment extends Fragment {
             return;
         }
 
+        String userEmail = auth.getCurrentUser().getEmail();
+        String namePull = userEmail.split("@")[0];
+        String pantryDocId = namePull + "-" + barcode;
+
         db.collection("user_created_barcodes").document(barcode).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        Long existingQty = documentSnapshot.getLong("quantity");
-                        showAlreadyExistsDialog(barcode, productName);
-                        resetScanner();
+                        db.collection("pantry_items").document(pantryDocId).get()
+                                .addOnSuccessListener(pantryDoc -> {
+                                    Long existingQty = pantryDoc.getLong("quantity");
+                                    if (existingQty == null) existingQty = 0L;
+                                    showUpdateQuantityDialog(barcode, productName, pantryDocId, existingQty);
+                                })
+                                        .addOnFailureListener(e -> Log.e(TAG, "Couldn't get item quantity", e));
                     } else {
                         Map<String, Object> barcodeData = new HashMap<>();
                         barcodeData.put("code", barcode);
@@ -417,6 +425,7 @@ public class BarcodeScannerFragment extends Fragment {
                                             barcodeResultTextView.setText("Item Added!");
                                             Log.d(TAG, "Item added successfully!");
                                             setOverlaySuccess();
+                                            showQuantityDialog(pantryDocId, productName);
                                             showItemDetailsDialog(productName, brand, category, ingredients);
                                         });
                                     }
@@ -427,6 +436,7 @@ public class BarcodeScannerFragment extends Fragment {
                                             barcodeResultTextView.setText("");
                                             Log.e(TAG, "Error adding item", e);
                                             setOverlayFailure();
+                                            resetScanner();
                                         });
                                     }
                                 });
@@ -438,9 +448,49 @@ public class BarcodeScannerFragment extends Fragment {
                         getActivity().runOnUiThread(() -> {
                             barcodeResultTextView.setText("");
                             setOverlayFailure();
+                            resetScanner();
                         });
                     }
                 });
+    }
+
+    private void showQuantityDialog(String pantryDocId, String productName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Enter Quantity");
+        builder.setMessage("How many of this item should we add to your pantry?");
+
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(input);
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            String inputText = input.getText().toString();
+            if (!inputText.isEmpty()) {
+                try {
+                    int quantity = Integer.parseInt(inputText);
+
+                    DocumentReference pantryRef = db.collection("pantry_items").document(pantryDocId);
+
+                    Map<String, Object> pantryItem = new HashMap<>();
+                    pantryItem.put("code", pantryDocId.split("-")[1]); // Extract barcode
+                    pantryItem.put("product_name", productName);
+                    pantryItem.put("quantity", quantity);
+                    pantryItem.put("user_id", auth.getCurrentUser().getUid());
+                    pantryItem.put("email", auth.getCurrentUser().getEmail());
+                    pantryItem.put("timestamp", FieldValue.serverTimestamp());
+
+                    pantryRef.set(pantryItem)
+                            .addOnSuccessListener(aVoid -> Log.d(TAG, "Item added to pantry: " + productName))
+                            .addOnFailureListener(e -> Log.e(TAG, "Error adding to pantry", e));
+
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getContext(), "Invalid quantity entered", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> resetScanner());
+        builder.show();
     }
 
     private void showAlreadyExistsDialog(String pantryDocId, String productName) {
@@ -475,11 +525,8 @@ public class BarcodeScannerFragment extends Fragment {
                             builder.setNegativeButton("Cancel", (dialog, which) -> resetScanner());
                             builder.show();
                         });
-                    } else {
-                        addItemToPantry(pantryDocId, productName, 1); // Default to 1 if first time adding
                     }
-                })
-                .addOnFailureListener(e -> Log.e(TAG, "Error checking pantry_items", e));
+                });
     }
 
     private void addItemToPantry(String barcode, String productName, Integer qty) {
@@ -500,19 +547,11 @@ public class BarcodeScannerFragment extends Fragment {
                 Long existingQty = documentSnapshot.getLong("quantity");
                 if (existingQty == null) existingQty = 0L;
 
-                showUpdateQuantityDialog(barcode, productName, pantryDocId, existingQty);
+                Log.d(TAG, "Item in pantry already, asking user to update quantity");
+                showAlreadyExistsDialog(pantryDocId, productName);
             } else {
-                Map<String, Object> pantryItem = new HashMap<>();
-                pantryItem.put("code", barcode);
-                pantryItem.put("product_name", productName);
-                pantryItem.put("quantity", qty);
-                pantryItem.put("user_id", userId);  // Ensure only the user can access it
-                pantryItem.put("email", userEmail);
-                pantryItem.put("timestamp", FieldValue.serverTimestamp());
-
-                pantryRef.set(pantryItem)
-                        .addOnSuccessListener(aVoid -> Log.d(TAG, "Item added to pantry: " + productName))
-                        .addOnFailureListener(e -> Log.e(TAG, "Error adding to pantry", e));
+                Log.d(TAG, "New item; asking user for initial quantity");
+                showQuantityDialog(pantryDocId, productName);
             }
         }).addOnFailureListener(e -> Log.e(TAG, "Error checking pantry_items collection", e));
     }
