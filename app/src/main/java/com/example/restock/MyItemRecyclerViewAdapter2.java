@@ -40,7 +40,7 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
         holder.mItem = item;
         holder.itemName.setText(item.content); // Name
         holder.itemQuantity.setText(holder.itemView.getContext().getString(R.string.quantity_text, Integer.parseInt(item.id))); //
-        holder.itemImage.setImageResource(R.drawable.ic_img);
+        holder.itemImage.setImageResource(R.drawable.img_placeholder);
     }
 
     @Override

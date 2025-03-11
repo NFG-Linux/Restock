@@ -39,7 +39,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         PlaceholderItem item = mValues.get(position);
         holder.mItem = item;
         holder.mItemName.setText(item.content);
-        holder.mItemImage.setImageResource(R.drawable.ic_img);
+        holder.mItemImage.setImageResource(R.drawable.img_placeholder);
     }
 
     @Override

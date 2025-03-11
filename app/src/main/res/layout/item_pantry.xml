@@ -15,7 +15,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_img"
+        android:src="@drawable/img_placeholder"
         android:contentDescription="@string/item_img_desc"/>
 
     <!-- Item Name & Quantity -->
@@ -46,8 +46,8 @@
     <!-- Running Low Indicator Icon -->
     <ImageView
         android:id="@+id/item_status_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_warning"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/low_ic_indicator"
         android:contentDescription="@string/low_stock_indicator"/>
 </LinearLayout>
