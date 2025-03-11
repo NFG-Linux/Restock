@@ -1,13 +1,16 @@
 package com.example.restock;
 
-import android.graphics.drawable.Drawable;
+// BarcodeScannerFragment.java
+// import android.graphics.drawable.Drawable;
 import android.widget.EditText;
+// import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
+// import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,12 +22,12 @@ import android.text.InputType;
 
 import androidx.annotation.OptIn;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ExperimentalGetImage;
+// import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
+// import androidx.lifecycle.LifecycleOwner;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -38,6 +41,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 // Barcode scanner & Firestore
 import androidx.appcompat.app.AlertDialog;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
@@ -47,12 +52,12 @@ import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentSnapshot;
+// import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 
 import java.util.List;
-import java.util.Arrays;
+// import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -61,19 +66,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BarcodeScannerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BarcodeScannerFragment extends Fragment {
 
-
     private static final String TAG = "BarcodeScannerFragment";
-
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private ProcessCameraProvider cameraProvider;
     private PreviewView previewView;
@@ -102,32 +97,10 @@ public class BarcodeScannerFragment extends Fragment {
     public BarcodeScannerFragment() {
         // Required empty public constructor
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BarcodeScannerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BarcodeScannerFragment newInstance(String param1, String param2) {
-        BarcodeScannerFragment fragment = new BarcodeScannerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
@@ -168,6 +141,14 @@ public class BarcodeScannerFragment extends Fragment {
                 startCamera();
             }
         }
+
+        // back button - angie
+        ImageView backButton = view.findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(v);
+            navController.navigateUp(); // Go back to the previous screen
+        });
+
     }
 
     @SuppressLint("MissingPermission")
@@ -246,7 +227,10 @@ public class BarcodeScannerFragment extends Fragment {
                             isScanningEnabled = false;
                         }
                     })
-                    .addOnFailureListener(e -> Log.e("BarcodeAnalyzer", "Barcode detection failed", e))
+                    .addOnFailureListener(e -> {
+                        Log.e("BarcodeAnalyzer", "Barcode detection failed", e);
+                        Log.d(TAG, "BarcodeAnalyzer: Barcode processing failed");
+                    })
                     .addOnCompleteListener(task -> imageProxy.close());
         }
 
@@ -292,6 +276,8 @@ public class BarcodeScannerFragment extends Fragment {
                             barcodeResultTextView.setText("");
                             Log.e(TAG, "Error checking imported_barcodes", e);
                             setOverlayFailure();
+                            Log.d(TAG, "Database check failed, resetting scanner (imported_barcodes)");
+                            resetScanner();
                         });
                     }
                 });
@@ -329,6 +315,8 @@ public class BarcodeScannerFragment extends Fragment {
                             barcodeResultTextView.setText("");
                             Log.e(TAG, "Error checking user_created_barcodes", e);
                             setOverlayFailure();
+                            Log.d(TAG, "Database check failed, resetting scanner (user_created_barcodes)");
+                            resetScanner();
                         });
                     }
                 });
@@ -337,15 +325,16 @@ public class BarcodeScannerFragment extends Fragment {
     private void promptUserToAddBarcode(String barcode) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                new AlertDialog.Builder(getContext())
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                         .setTitle("Barcode Not Found")
                         .setMessage("Would you like to add it?")
                         .setPositiveButton("Yes", (dialog, which) -> showAddBarcodeDialog(barcode))
                         .setNegativeButton("No", (dialog, which) -> {
                             setOverlayFailure();
-                            resetScanner();
+                            Log.d(TAG, "showAddBarcodeDialog no button pressed");
                         })
-                        .show();
+                        .setOnDismissListener(dialogInterface -> resetScanner());
+                builder.show();
             });
         }
     }
@@ -385,6 +374,7 @@ public class BarcodeScannerFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialog, which) -> {
             setOverlayFailure();
             resetScanner();
+            Log.d(TAG, "showAddBarcodeDialog cancel button pressed");
         });
 
         builder.show();
@@ -397,6 +387,7 @@ public class BarcodeScannerFragment extends Fragment {
                 .setPositiveButton("OK", (dialog, which) -> resetScanner())
                 .show();
     }
+
     private void addItemToUserDatabase(String barcode, String productName, String brand, String category, String ingredients) {
         if (auth.getCurrentUser() == null) {
             return;
@@ -568,20 +559,37 @@ public class BarcodeScannerFragment extends Fragment {
         } else {
             Log.d(TAG, "resetScanner: barcodeAnalyzerInstance is null");
         }
+        Log.d(TAG, "resetScanner() called");
+        resetOverlay();
     }
 
-    private void setOverlaySuccess(){
-        if(getActivity() != null){
-            getActivity().runOnUiThread(() ->{
-                barcodeOverlay.setBackgroundResource(R.drawable.barcode_outline_success);
+    private void setOverlaySuccess() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                Log.d(TAG, "setOverlaySuccess() called");
+                barcodeOverlay.setSelected(true);
+                barcodeOverlay.setActivated(false);
             });
         }
     }
 
-    private void setOverlayFailure(){
-        if(getActivity() != null){
-            getActivity().runOnUiThread(() ->{
-                barcodeOverlay.setBackgroundResource(R.drawable.barcode_outline_failure);
+    private void setOverlayFailure() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                Log.d(TAG, "setOverlayFailure() called");
+                resetOverlay();
+                barcodeOverlay.setSelected(false);
+                barcodeOverlay.setActivated(true);
+            });
+        }
+    }
+
+    private void resetOverlay(){
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                Log.d(TAG, "resetOverlay() called");
+                barcodeOverlay.setSelected(false);
+                barcodeOverlay.setActivated(false);
             });
         }
     }

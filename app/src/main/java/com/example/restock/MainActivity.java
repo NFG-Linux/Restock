@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
                     destination.getId() == R.id.LoginFragment ||
                     destination.getId() == R.id.RegisterFragment ||
                     destination.getId() == R.id.profileFragment ||
-                    destination.getId() == R.id.notificationFragment);
+                    destination.getId() == R.id.notificationFragment)||
+                    destination.getId() == R.id.BarcodeScannerFragment;
 
             findViewById(R.id.header_fragment).setVisibility(hideNavigation ? View.GONE : View.VISIBLE);
             findViewById(R.id.footer_fragment).setVisibility(hideNavigation ? View.GONE : View.VISIBLE);
