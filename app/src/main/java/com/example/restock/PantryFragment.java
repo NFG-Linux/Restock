@@ -96,27 +96,8 @@ public class PantryFragment extends Fragment {
             sortBottomSheet.show(getParentFragmentManager(), "SortFilterBottomSheet");
         });
 
-        // Floating Action Button with Menu
-        FloatingActionButton fab = binding.addButton;
-        fab.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(requireContext(), v);
-            popup.getMenuInflater().inflate(R.menu.fab_menu, popup.getMenu());
-
-            popup.setOnMenuItemClickListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.menu_scan_item) {
-                    NavHostFragment.findNavController(PantryFragment.this)
-                            .navigate(R.id.action_PantryFragment_to_BarcodeScannerFragment);
-                    return true;
-                } else if (id == R.id.menu_add_item) {
-                    // Placeholder for manual item addition pop-up
-                    // Show manual add modal here
-                    return true;
-                }
-                return false;
-            });
-            popup.show();
-        });
+        // FAB
+        FabMenuHelper.setupFabMenu(this, binding.addButton);
 
     }
 

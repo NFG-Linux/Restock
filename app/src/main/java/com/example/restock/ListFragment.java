@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.restock.placeholder.PlaceholderContent;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A fragment representing a list of Items.
@@ -67,6 +68,10 @@ public class ListFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
         recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
+
+        // Inside onCreateView(), after inflating the view
+        FloatingActionButton fab = view.findViewById(R.id.add_button);
+        FabMenuHelper.setupFabMenu(this, fab);
 
         return view;
     }
