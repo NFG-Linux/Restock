@@ -18,6 +18,9 @@
     <!-- Microphone Permission -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <!-- External Storage Permission -->
+    <uses-permission android:name="android.permission.READ_IMAGES" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
