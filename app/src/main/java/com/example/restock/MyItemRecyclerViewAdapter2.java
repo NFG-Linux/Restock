@@ -4,6 +4,8 @@ package com.example.restock;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +41,24 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
         PlaceholderItem item = mValues.get(position);
         holder.mItem = item;
         holder.itemName.setText(item.content); // Name
-        holder.itemQuantity.setText(holder.itemView.getContext().getString(R.string.quantity_text, Integer.parseInt(item.id))); //
+        holder.itemQuantity.setText(holder.itemView.getContext().getString(R.string.quantity_text, Integer.parseInt(item.id)));
         holder.itemImage.setImageResource(R.drawable.img_placeholder);
+
+        // long press listener
+        holder.itemView.setOnLongClickListener(view -> {
+            showItemDetails(view.getContext(), item);
+            return true;
+        });
+    }
+
+    // Method to handle long press action
+    private void showItemDetails(Context context, PlaceholderItem item) {
+        // Replace with navigation logic
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Item Details")
+                .setMessage("Name: " + item.content + "\nQuantity: " + item.id)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     @Override

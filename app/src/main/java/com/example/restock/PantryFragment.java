@@ -89,9 +89,9 @@ public class PantryFragment extends Fragment {
         // Sort Filter Icon Click
         ImageView sortIcon = binding.searchBar.findViewById(R.id.sort_icon);
         sortIcon.setOnClickListener(v -> {
-            v.startAnimation(bounceAnim); // Apply bounce animation
+            v.startAnimation(bounceAnim); // bounce animation
 
-            // Open BottomSheetDialogFragment (create this next)
+            // Open BottomSheetDialogFragment
             SortFilterBottomSheet sortBottomSheet = new SortFilterBottomSheet();
             sortBottomSheet.show(getParentFragmentManager(), "SortFilterBottomSheet");
         });
