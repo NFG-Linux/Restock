@@ -260,9 +260,8 @@ public class BarcodeScannerFragment extends Fragment {
 
                                 Log.d(TAG, "Found the item in imported_barcodes");
 
-                                showItemDetailsDialog(productName, brand, category, ingredients);
+                                showItemDetailsDialog(productName, brand, category, ingredients, barcode);
                                 setOverlaySuccess();
-                                addItemToPantry(barcode, productName, qty);
                             } else {
                                 Log.d(TAG, "Didn't find in imported_barcodes, searching in user_created_barcodes");
                                 checkUserCreatedBarcodes(barcode, qty);
@@ -300,9 +299,8 @@ public class BarcodeScannerFragment extends Fragment {
                                 Log.d(TAG, "Category: " + category);
                                 Log.d(TAG, "Ingredients: " + ingredients);
 
-                                showItemDetailsDialog(productName, brand, category, ingredients);
+                                showItemDetailsDialog(productName, brand, category, ingredients, barcode);
                                 setOverlaySuccess();
-                                addItemToPantry(barcode, productName, qty);
                             } else {
                                 promptUserToAddBarcode(barcode);
                             }
@@ -380,11 +378,14 @@ public class BarcodeScannerFragment extends Fragment {
         builder.show();
     }
 
-    private void showItemDetailsDialog(String productName, String brand, String category, String ingredients) {
+    private void showItemDetailsDialog(String productName, String brand, String category, String ingredients, String barcode) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Item Details")
                 .setMessage("Product: " + productName + "\nBrand: " + brand + "\nCategory: " + category + "\nIngredients: " + ingredients)
-                .setPositiveButton("OK", (dialog, which) -> resetScanner())
+                .setPositiveButton("OK", (dialog, which) -> {
+                    addItemToPantry(barcode, productName, 0);
+                    resetScanner();
+                })
                 .show();
     }
 
@@ -406,7 +407,7 @@ public class BarcodeScannerFragment extends Fragment {
                                     if (existingQty == null) existingQty = 0L;
                                     showUpdateQuantityDialog(barcode, productName, pantryDocId, existingQty);
                                 })
-                                        .addOnFailureListener(e -> Log.e(TAG, "Couldn't get item quantity", e));
+                                .addOnFailureListener(e -> Log.e(TAG, "Couldn't get item quantity", e));
                     } else {
                         Map<String, Object> barcodeData = new HashMap<>();
                         barcodeData.put("code", barcode);
@@ -426,7 +427,7 @@ public class BarcodeScannerFragment extends Fragment {
                                             Log.d(TAG, "Item added successfully!");
                                             setOverlaySuccess();
                                             showQuantityDialog(pantryDocId, productName);
-                                            showItemDetailsDialog(productName, brand, category, ingredients);
+                                            showItemDetailsDialog(productName, brand, category, ingredients, barcode);
                                         });
                                     }
                                 })
