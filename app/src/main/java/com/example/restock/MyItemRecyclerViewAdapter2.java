@@ -12,20 +12,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.restock.placeholder.PlaceholderContent.PlaceholderItem;
+//import com.example.restock.placeholder.PlaceholderContent.PlaceholderItem;
+
+//Firebase imports
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyclerViewAdapter2.ViewHolder> {
 
-    private final List<PlaceholderItem> mValues;
+    private final List<PantryItem> pantryItemList;
+    private final FirebaseFirestore db;
 
-    public MyItemRecyclerViewAdapter2(List<PlaceholderItem> items) {
-        mValues = items;
+    public MyItemRecyclerViewAdapter2(List<PantryItem> items) {
+
+        this.pantryItemList = items;
+        this.db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -38,39 +44,74 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        PlaceholderItem item = mValues.get(position);
-        holder.mItem = item;
-        holder.itemName.setText(item.content); // Name
-        holder.itemQuantity.setText(holder.itemView.getContext().getString(R.string.quantity_text, Integer.parseInt(item.id)));
+        PantryItem item = pantryItemList.get(position);
+        holder.itemName.setText(item.getProduct_name()); // Name
+        holder.itemQuantity.setText(holder.itemView.getContext().getString(R.string.quantity_text, Integer.parseInt(String.valueOf(item.getQuantity()))));
         holder.itemImage.setImageResource(R.drawable.img_placeholder);
 
         // long press listener
         holder.itemView.setOnLongClickListener(view -> {
-            showItemDetails(view.getContext(), item);
+            fetchAndShowItemDetails(view.getContext(), item.getCode(), item.getProduct_name());
             return true;
         });
     }
 
+    /**
+     * Fetches item details from either 'imported_barcodes' or 'user_created_barcodes' and displays them in a dialog.
+     */
+    private void fetchAndShowItemDetails(Context context, String barcode, String productName) {
+        db.collection("imported_barcodes").document(barcode).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        showItemDetails(context, documentSnapshot);
+                    } else {
+                        db.collection("user_created_barcodes").document(barcode).get()
+                                .addOnSuccessListener(userCreatedSnapshot -> {
+                                    if (userCreatedSnapshot.exists()) {
+                                        showItemDetails(context, userCreatedSnapshot);
+                                    } else {
+                                        showBasicItemDetails(context, barcode, productName);
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> showBasicItemDetails(context, barcode, productName));
+    }
+
     // Method to handle long press action
-    private void showItemDetails(Context context, PlaceholderItem item) {
-        // Replace with navigation logic
+    private void showItemDetails(Context context, DocumentSnapshot document) {
+        String code = document.getString("code");
+        String productName = document.getString("product_name");
+        String brand = document.getString("brand");
+        String ingredients = document.getString("ingredients_text");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Item Details")
-                .setMessage("Name: " + item.content + "\nQuantity: " + item.id)
+                .setMessage("Barcode: " + code + "\nName: " + productName + "\nBrand: " + brand + "\nIngredients: " + ingredients)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    /**
+     * Fallback if item details are missing from Firestore.
+     */
+    private void showBasicItemDetails(Context context, String barcode, String productName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Item Details")
+                .setMessage("Barcode: " + barcode + "\nName: " + productName)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return pantryItemList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView itemImage;
         public final TextView itemName;
         public final TextView itemQuantity;
-        public PlaceholderItem mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -29,7 +29,13 @@ import androidx.appcompat.widget.PopupMenu;
 
 import com.example.restock.placeholder.PlaceholderContent;
 
+//firebase imports
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -38,13 +44,21 @@ import java.util.Locale;
 public class PantryFragment extends Fragment {
 
     private FragmentPantryBinding binding;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+    private RecyclerView recyclerView;
+    private MyItemRecyclerViewAdapter2 adapter2;
+    private List<PantryItem> pantryItemList;
 
     public PantryFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -58,7 +72,11 @@ public class PantryFragment extends Fragment {
         // Set the adapter
         RecyclerView recyclerView = binding.pantryRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter2(PlaceholderContent.ITEMS));
+        pantryItemList = new ArrayList<>();
+        adapter2 = new MyItemRecyclerViewAdapter2(pantryItemList);
+        recyclerView.setAdapter(adapter2);
+
+        loadUserPantryItems();
 
         return view;
     }
@@ -99,6 +117,30 @@ public class PantryFragment extends Fragment {
         // FAB
         FabMenuHelper.setupFabMenu(this, binding.addButton);
 
+    }
+
+    private void loadUserPantryItems() {
+        String userEmail = auth.getCurrentUser().getEmail();
+
+        db.collection("pantry_items")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    pantryItemList.clear();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        PantryItem item = document.toObject(PantryItem.class);
+                        pantryItemList.add(item);
+                    }
+
+                    if (pantryItemList.isEmpty()) {
+                        Toast.makeText(getContext(), "No items in pantry yet", Toast.LENGTH_SHORT).show();
+                    }
+
+                    adapter2.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Couldnt load pantry items", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private final ActivityResultLauncher<Intent> speechRecognitionLauncher =
