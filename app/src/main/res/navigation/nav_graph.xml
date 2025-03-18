@@ -122,7 +122,7 @@
     <!-- Notification Screen -->
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.restock.NotificationFragment"
+        android:name="notification.NotificationFragment"
         android:label="Notifications"
         tools:layout="@layout/fragment_notification" >
     </fragment>

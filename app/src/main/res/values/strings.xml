@@ -56,6 +56,11 @@
     <!-- back button nav -->
     <string name="back_button_desc">Back</string>"
 
+    <!-- strings for notifications -->
+    <string name="notification_title">Notification Title</string>
+    <string name="notification_message">Notification message goes here</string>
+    <string name="notification_time">Time</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="onboarding_text1">Explore the App</string>
     <string name="onboarding_text2">Register for a hands off approach on shopping!</string>

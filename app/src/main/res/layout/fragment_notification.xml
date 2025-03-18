@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- fragment_notification.xml -->
+<!-- Layout for the NotificationFragment -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NotificationFragment">
+    tools:context="notification.NotificationFragment">
 
-    <!-- Back Button -->
     <ImageView
         android:id="@+id/back_button"
         android:layout_width="40dp"
@@ -17,10 +17,14 @@
         android:src="@drawable/nav_angle_left"
         android:layout_margin="10dp" />
 
-    <!-- Fragment Content -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notification_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginTop="60dp" />
+
 </FrameLayout>
+
+<!-- Documentation -->
+    <!-- Back button -->
+    <!-- RecyclerView to display a list of notifications -->
