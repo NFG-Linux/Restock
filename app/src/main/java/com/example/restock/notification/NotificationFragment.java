@@ -29,7 +29,7 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_notification, container, false);
+        View rootView = inflater.inflate(R.layout.notification_fragment, container, false);
 
         // Back button
         backButton = rootView.findViewById(R.id.back_button);
@@ -51,8 +51,3 @@ public class NotificationFragment extends Fragment {
         return rootView;
     }
 }
-
-// -------- Documentation -------- //
-// Fragment responsible for displaying the notifications screen
-// Initializes the RecyclerView, sets up the NotificationAdapter
-// Navigation back to the previous screen using the back button

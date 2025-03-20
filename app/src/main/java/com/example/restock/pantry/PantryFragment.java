@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restock.FabMenuHelper;
 import com.example.restock.R;
-import com.example.restock.SortFilterBottomSheet;
-import com.example.restock.databinding.FragmentPantryBinding;
 
 import android.speech.RecognizerIntent;
 import android.view.LayoutInflater;
@@ -26,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 //firebase imports
+import com.example.restock.databinding.PantryFragmentBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,7 +37,7 @@ import java.util.Locale;
 // Fragment class that for displays and manages the user's pantry list
 public class PantryFragment extends Fragment {
 
-    private FragmentPantryBinding binding;
+    private PantryFragmentBinding binding;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     PantryAdapter adapter;
@@ -58,7 +57,7 @@ public class PantryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentPantryBinding.inflate(inflater, container, false);
+        binding = PantryFragmentBinding.inflate(inflater, container, false);
 
         //View view = inflater.inflate(R.layout.fragment_pantry_list, container, false);
         View view = binding.getRoot();

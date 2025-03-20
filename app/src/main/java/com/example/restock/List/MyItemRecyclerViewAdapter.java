@@ -1,4 +1,4 @@
-package com.example.restock;
+package com.example.restock.List;
 
 //MyItemRecyclerViewAdapter(list).java
 import androidx.annotation.NonNull;
@@ -12,8 +12,9 @@ import android.widget.ImageView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.restock.R;
+import com.example.restock.databinding.ListItemBinding;
 import com.example.restock.placeholder.PlaceholderContent.PlaceholderItem;
-import com.example.restock.databinding.ItemListBinding;
 
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +33,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        ItemListBinding binding = ItemListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ListItemBinding binding = ListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
@@ -77,7 +78,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public PlaceholderItem mItem;
         public final View mView;
 
-        public ViewHolder(ItemListBinding binding) {
+        public ViewHolder(ListItemBinding binding) {
             super(binding.getRoot());
             mItemImage = binding.itemImage;
             mItemName = binding.itemName;

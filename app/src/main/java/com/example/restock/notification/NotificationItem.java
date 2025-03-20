@@ -18,7 +18,3 @@ public class NotificationItem {
     public String getMessage() { return message; }
     public String getTime() { return time; }
 }
-
-// -------- Documentation -------- //
-// NotificationItem.java
-// Data model class representing a single notification with a title, message, and timestamp

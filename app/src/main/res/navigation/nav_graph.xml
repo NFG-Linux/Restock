@@ -80,7 +80,7 @@
         android:id="@+id/pantryFragment"
         android:name="com.example.restock.pantry.PantryFragment"
         android:label="Pantry"
-        tools:layout="@layout/fragment_pantry">
+        tools:layout="@layout/pantry_fragment">
 
         <action
             android:id="@+id/action_PantryFragment_to_BarcodeScannerFragment"
@@ -90,9 +90,9 @@
     <!-- List Screen -->
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.restock.ListFragment"
+        android:name="com.example.restock.List.ListFragment"
         android:label="List"
-        tools:layout="@layout/fragment_list">
+        tools:layout="@layout/list_fragment">
     </fragment>
 
     <!-- Store Screen -->
@@ -124,7 +124,7 @@
         android:id="@+id/notificationFragment"
         android:name="com.example.restock.notification.NotificationFragment"
         android:label="Notifications"
-        tools:layout="@layout/fragment_notification" >
+        tools:layout="@layout/notification_fragment" >
     </fragment>
 
 </navigation>

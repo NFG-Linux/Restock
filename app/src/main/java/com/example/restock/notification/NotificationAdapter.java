@@ -36,7 +36,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public NotificationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_notification, parent, false);
+                .inflate(R.layout.notification_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -53,6 +53,3 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return notificationList.size();
     }
 }
-
-// -------- Documentation -------- //
-// Handles creating ViewHolder instances and binding each notification's title, message, and time.

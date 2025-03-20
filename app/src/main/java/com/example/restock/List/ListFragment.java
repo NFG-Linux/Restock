@@ -1,4 +1,4 @@
-package com.example.restock;
+package com.example.restock.List;
 
 //List Fragment.java
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.restock.FabMenuHelper;
+import com.example.restock.R;
 import com.example.restock.placeholder.PlaceholderContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -55,7 +57,7 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        View view = inflater.inflate(R.layout.list_fragment, container, false);
 
         // Find the RecyclerView inside the layout
         RecyclerView recyclerView = view.findViewById(R.id.listRecyclerView);

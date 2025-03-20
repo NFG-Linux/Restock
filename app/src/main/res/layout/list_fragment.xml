@@ -47,7 +47,7 @@
         app:layout_constraintBottom_toTopOf="@id/footer_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_list"/>
+        tools:listitem="@layout/list_item"/>
 
     <!-- Divider Above Footer -->
     <View

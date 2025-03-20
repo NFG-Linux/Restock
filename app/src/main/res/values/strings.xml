@@ -39,6 +39,8 @@
     <string name="item_expiration_date_example">Expiration Date</string>
     <string name="barcode_icon_desc">Barcode Icon</string>
 
+    <string name="sort_by">Sort By</string>
+
     <!-- Grocery Item List -->
     <string name="grocery_list">Grocery List</string>
     <string name="edit_icon_desc">Edit item</string>

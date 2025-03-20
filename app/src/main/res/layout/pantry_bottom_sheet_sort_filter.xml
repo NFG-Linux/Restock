@@ -12,7 +12,7 @@
         android:id="@+id/sort_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sort By"
+        android:text="@string/sort_by"
         android:textSize="18sp"
         android:textStyle="bold"
         android:paddingBottom="8dp"/>

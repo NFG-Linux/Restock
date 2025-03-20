@@ -24,7 +24,3 @@
         android:layout_marginTop="60dp" />
 
 </FrameLayout>
-
-<!-- Documentation -->
-    <!-- Back button -->
-    <!-- RecyclerView to display a list of notifications -->
