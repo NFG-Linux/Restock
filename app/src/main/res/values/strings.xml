@@ -34,8 +34,10 @@
     <string name="add_item">Add a new pantry item</string>
     <string name="low_stock_indicator">Indicator showing low stock</string>
     <string name="quantity_text">Qty: %d</string>
-    <string name="item_name_example">Apples</string>
-    <string name="item_quantity_example">Quantity: 3</string>
+    <string name="item_name_example">Item Name</string>
+    <string name="item_quantity_example">Qty: 0</string>
+    <string name="item_expiration_date_example">Expiration Date</string>
+    <string name="barcode_icon_desc">Barcode Icon</string>
 
     <!-- Grocery Item List -->
     <string name="grocery_list">Grocery List</string>

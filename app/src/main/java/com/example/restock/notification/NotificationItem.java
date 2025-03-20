@@ -1,4 +1,4 @@
-package notification;
+package com.example.restock.notification;
 
 // NotificationItem.java
 // Data class holding notification details (title, message, time)

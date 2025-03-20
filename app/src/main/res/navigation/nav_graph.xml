@@ -78,7 +78,7 @@
     <!-- Pantry Screen (Home screen) -->
     <fragment
         android:id="@+id/pantryFragment"
-        android:name="com.example.restock.PantryFragment"
+        android:name="com.example.restock.pantry.PantryFragment"
         android:label="Pantry"
         tools:layout="@layout/fragment_pantry">
 
@@ -122,7 +122,7 @@
     <!-- Notification Screen -->
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="notification.NotificationFragment"
+        android:name="com.example.restock.notification.NotificationFragment"
         android:label="Notifications"
         tools:layout="@layout/fragment_notification" >
     </fragment>

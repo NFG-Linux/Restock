@@ -1,4 +1,4 @@
-package notification;
+package com.example.restock.notification;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

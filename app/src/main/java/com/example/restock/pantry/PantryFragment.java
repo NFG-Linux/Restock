@@ -1,6 +1,5 @@
-package com.example.restock;
+package com.example.restock.pantry;
 
-// PantryFragment.java
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +8,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.restock.FabMenuHelper;
+import com.example.restock.R;
+import com.example.restock.SortFilterBottomSheet;
 import com.example.restock.databinding.FragmentPantryBinding;
 
 import android.speech.RecognizerIntent;
@@ -24,11 +25,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.appcompat.widget.PopupMenu;
-
-import com.example.restock.placeholder.PlaceholderContent;
-
 //firebase imports
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,17 +34,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * A fragment representing a list of Items.
- */
+// PantryFragment.java
+// Fragment class that for displays and manages the user's pantry list
 public class PantryFragment extends Fragment {
 
     private FragmentPantryBinding binding;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private RecyclerView recyclerView;
-    private MyItemRecyclerViewAdapter2 adapter2;
-    private List<PantryItem> pantryItemList;
+    PantryAdapter adapter;
+    List<PantryItem> pantryItemList;
 
     public PantryFragment() {
     }
@@ -73,8 +67,8 @@ public class PantryFragment extends Fragment {
         RecyclerView recyclerView = binding.pantryRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         pantryItemList = new ArrayList<>();
-        adapter2 = new MyItemRecyclerViewAdapter2(pantryItemList);
-        recyclerView.setAdapter(adapter2);
+        adapter = new PantryAdapter(pantryItemList);
+        recyclerView.setAdapter(adapter);
 
         loadUserPantryItems();
 
@@ -136,11 +130,11 @@ public class PantryFragment extends Fragment {
                         Toast.makeText(getContext(), "No items in pantry yet", Toast.LENGTH_SHORT).show();
                     }
 
-                    adapter2.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Couldnt load pantry items", Toast.LENGTH_SHORT).show();
-                });
+                .addOnFailureListener(e ->
+                    Toast.makeText(getContext(), "Couldn't load pantry items", Toast.LENGTH_SHORT).show()
+                );
     }
 
     private final ActivityResultLauncher<Intent> speechRecognitionLauncher =

@@ -1,6 +1,5 @@
-package com.example.restock;
+package com.example.restock.pantry;
 
-// MyItemRecyclerViewAdapter2(pantry).java
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,20 +14,20 @@ import android.widget.TextView;
 //import com.example.restock.placeholder.PlaceholderContent.PlaceholderItem;
 
 //Firebase imports
-import com.google.firebase.Firebase;
+import com.example.restock.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
-
-public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyclerViewAdapter2.ViewHolder> {
+// PantryAdapter.java
+// Adapter class to bind pantry item data to the pantry list UI in PantryFragment
+public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder> {
 
     private final List<PantryItem> pantryItemList;
     private final FirebaseFirestore db;
 
-    public MyItemRecyclerViewAdapter2(List<PantryItem> items) {
+    public PantryAdapter(List<PantryItem> items) {
 
         this.pantryItemList = items;
         this.db = FirebaseFirestore.getInstance();
@@ -45,7 +44,8 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         PantryItem item = pantryItemList.get(position);
-        holder.itemName.setText(item.getProduct_name()); // Name
+
+        holder.itemName.setText(item.getProduct_name());
         holder.itemQuantity.setText(holder.itemView.getContext().getString(R.string.quantity_text, Integer.parseInt(String.valueOf(item.getQuantity()))));
         holder.itemImage.setImageResource(R.drawable.img_placeholder);
 
@@ -93,7 +93,7 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
     }
 
     /**
-     * Fallback if item details are missing from Firestore.
+     * Fallback if item details are missing from Fire store.
      */
     private void showBasicItemDetails(Context context, String barcode, String productName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -112,12 +112,16 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
         public final ImageView itemImage;
         public final TextView itemName;
         public final TextView itemQuantity;
+        public final ImageView itemStatus;
+        public final TextView itemExpiration;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = itemView.findViewById(R.id.item_image);
             itemName = itemView.findViewById(R.id.item_name);
             itemQuantity = itemView.findViewById(R.id.item_quantity);
+            itemStatus = itemView.findViewById(R.id.item_status_icon);
+            itemExpiration = itemView.findViewById(R.id.item_expiration_date);
         }
 
         @Override
