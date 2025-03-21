@@ -93,6 +93,12 @@
     <string name="profile_name_hint">Name</string>
     <string name="profile_email_hint">Email</string>
     <string name="profile_save_button">Save</string>
+    <string name="profile_age_hint">Age</string>
+    <string name="profile_family_size_hint">Family Size</string>
+    <string name="profile_favorite_store_hint">Favorite Store</string>
+    <string name="profile_monthly_budget_hint">Monthly Budget</string>
+    <string name="dietary_preference_prompt">Dietary Preference</string>
+    <string name="profile_image_description">Profile image</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
