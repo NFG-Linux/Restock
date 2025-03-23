@@ -57,19 +57,20 @@ public class StoreFragment extends Fragment {
          * user has installed Google Play services and returned to the app.
          */
         @Override
-        public void onMapReady(GoogleMap googleMap) {
+        public void onMapReady(GoogleMap map) {
+            googleMap = map;
 
             //enable location if perms granted
             if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                googleMap.setMyLocationEnabled(true);
+                map.setMyLocationEnabled(true);
                 getUserLocation();
             } else {
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
             }
 
             LatLng store1 = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(store1).title("Store 1"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(store1, 12f));
+            map.addMarker(new MarkerOptions().position(store1).title("Store 1"));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(store1, 12f));
         }
     };
 
