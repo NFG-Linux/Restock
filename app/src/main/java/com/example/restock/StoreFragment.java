@@ -29,7 +29,6 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
-
 public class StoreFragment extends Fragment {
 
     private GoogleMap googleMap;
