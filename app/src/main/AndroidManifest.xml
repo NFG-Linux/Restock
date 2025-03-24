@@ -7,10 +7,19 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <!-- Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <!-- Microphone Permission -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <!-- External Storage Permission -->
+    <uses-permission android:name="android.permission.READ_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -34,6 +43,7 @@
              project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
              "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbVYnE1-zl2yd2Y3ZO5iC88rSmtzjnhCk" />
@@ -48,6 +58,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- EditPantryItemActivity -->
+        <activity android:name=".pantry.EditPantryItemActivity" />
+
     </application>
 
 </manifest>

@@ -20,7 +20,7 @@
     <string name="search_icon_desc">Search</string>
     <string name="search_hint">Search Pantry..</string>
     <string name="mic_icon_desc">Voice Search</string>
-    <string name="sort_icon_desc">Sort Pantry</string>
+    <string name="filter_icon_desc">Filter Pantry</string>
 
     <!-- footer navigation -->
     <string name="pantry_icon_desc">Pantry</string>
@@ -34,8 +34,18 @@
     <string name="add_item">Add a new pantry item</string>
     <string name="low_stock_indicator">Indicator showing low stock</string>
     <string name="quantity_text">Qty: %d</string>
-    <string name="item_name_example">Apples</string>
-    <string name="item_quantity_example">Quantity: 3</string>
+    <string name="item_name_example">Item Name</string>
+    <string name="item_quantity_example">Qty: 0</string>
+    <string name="item_expiration_date_example">Expiration Date</string>
+    <string name="barcode_icon_desc">Barcode Icon</string>
+
+    <string name="sort_by">Sort By</string>
+
+    <string name="item_name_label">Item Name</string>
+    <string name="item_name_value">Sample Item Name</string>
+    <string name="item_quantity_label">Quantity</string>
+    <string name="item_quantity_value">3</string>
+    <string name="edit_button">Edit</string>
 
     <!-- Grocery Item List -->
     <string name="grocery_list">Grocery List</string>
@@ -52,6 +62,14 @@
     <string name="store_select_button_text">Store Select</string>
     <string name="search_store">Search by street address, city, or zip code..</string>
     <string name="search_button_text">Search</string>
+
+    <!-- back button nav -->
+    <string name="back_button_desc">Back</string>"
+
+    <!-- strings for notifications -->
+    <string name="notification_title">Notification Title</string>
+    <string name="notification_message">Notification message goes here</string>
+    <string name="notification_time">Time</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="onboarding_text1">Explore the App</string>
@@ -75,6 +93,18 @@
     <string name="login_PasswordHint">enter password</string>
     <string name="login_OrLoginWithText">Or Login With</string>
     <string name="googleButtonText">Google</string>
+    <string name="login_signup_link">Don\'t have an account? Sign up</string>
+    <string name="register_login_link">Already have an account? Log in</string>
+    <string name="profile_tap_to_upload">Tap to upload</string>
+    <string name="profile_name_hint">Name</string>
+    <string name="profile_email_hint">Email</string>
+    <string name="profile_save_button">Save</string>
+    <string name="profile_age_hint">Age</string>
+    <string name="profile_family_size_hint">Family Size</string>
+    <string name="profile_favorite_store_hint">Favorite Store</string>
+    <string name="profile_monthly_budget_hint">Monthly Budget</string>
+    <string name="dietary_preference_prompt">Dietary Preference</string>
+    <string name="profile_image_description">Profile image</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

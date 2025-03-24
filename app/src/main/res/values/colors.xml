@@ -3,6 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="grey">#BDBDBD</color>
-    <color name="light_grey">#D3D3D3</color>
+    <!-- Grey Shades -->
+    <color name="dark_grey">#404040</color>  <!-- Dark Grey -->
+    <color name="grey">#808080</color>      <!-- Medium Grey -->
+    <color name="light_grey">#D3D3D3</color> <!-- Light Grey -->
+
+    <color name="overlay_color">#FFFFFF</color>
 </resources>
