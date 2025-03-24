@@ -8,6 +8,14 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+//needed for Manual Add to work
+import android.app.AlertDialog;
+import android.text.InputType;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 public class FabMenuHelper {
 
     public static void setupFabMenu(Fragment fragment, FloatingActionButton fab) {
@@ -22,8 +30,30 @@ public class FabMenuHelper {
                             .navigate(R.id.BarcodeScannerFragment);
                     return true;
                 } else if (id == R.id.menu_add_item) {
-                    // Placeholder for manual item addition pop-up
-                    // Show manual add modal here
+                    AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireContext());
+                    builder.setTitle("Manually Add Item");
+
+                    final EditText barcodeInput = new EditText(fragment.requireContext());
+                    barcodeInput.setHint("Barcode");
+                    barcodeInput.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                    LinearLayout layout = new LinearLayout(fragment.requireContext());
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    layout.addView(barcodeInput);
+                    builder.setView(layout);
+
+                    builder.setPositiveButton("Next", (dialog, which) -> {
+                        String barcode = barcodeInput.getText().toString().trim();
+                        if (barcode.isEmpty()) {
+                            Toast.makeText(fragment.getContext(), "A barcode is required", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        ManualAddDialogHelper.handleBarcode(barcode, fragment);
+                    });
+
+                    builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+                    builder.show();
                     return true;
                 }
                 return false;
