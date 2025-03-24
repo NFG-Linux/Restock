@@ -43,8 +43,7 @@ public class PantryFragment extends Fragment {
     PantryAdapter adapter;
     List<PantryItem> pantryItemList;
 
-    public PantryFragment() {
-    }
+    public PantryFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +65,7 @@ public class PantryFragment extends Fragment {
         RecyclerView recyclerView = binding.pantryRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         pantryItemList = new ArrayList<>();
-        adapter = new PantryAdapter(pantryItemList);
+        adapter = new PantryAdapter(pantryItemList, getParentFragmentManager());
         recyclerView.setAdapter(adapter);
 
         loadUserPantryItems();
@@ -145,6 +144,8 @@ public class PantryFragment extends Fragment {
                     }
                 }
             });
+
+
 
     @Override
     public void onDestroyView() {

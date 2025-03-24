@@ -41,6 +41,12 @@
 
     <string name="sort_by">Sort By</string>
 
+    <string name="item_name_label">Item Name</string>
+    <string name="item_name_value">Sample Item Name</string>
+    <string name="item_quantity_label">Quantity</string>
+    <string name="item_quantity_value">3</string>
+    <string name="edit_button">Edit</string>
+
     <!-- Grocery Item List -->
     <string name="grocery_list">Grocery List</string>
     <string name="edit_icon_desc">Edit item</string>
