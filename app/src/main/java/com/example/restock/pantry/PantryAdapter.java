@@ -27,6 +27,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
     FragmentManager fragmentManager;
     ActivityResultLauncher<Intent> editItemLauncher;
 
+    @SuppressWarnings("unused")
     public PantryAdapter() {}
 
     public PantryAdapter(List<PantryItem> items, FragmentManager fragmentManager, ActivityResultLauncher<Intent> editItemLauncher) {
@@ -59,10 +60,6 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
             return true;
         });
 
-    }
-
-    public interface OnEditItemClickListener {
-        void onEditItem(PantryItem item);
     }
 
     @Override

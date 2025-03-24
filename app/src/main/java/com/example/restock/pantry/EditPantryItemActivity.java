@@ -10,15 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.restock.R;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 
 // EditPantryItemActivity.java
 public class EditPantryItemActivity extends AppCompatActivity {
@@ -74,9 +70,6 @@ public class EditPantryItemActivity extends AppCompatActivity {
             updatedData.put("product_name", updatedName);
             updatedData.put("quantity", updatedQuantity);
 
-            // Get user email (assuming user is authenticated)
-            String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
             // Update Fire store
             db.collection("pantry_items")
                     .whereEqualTo("code", item.getCode())
@@ -94,19 +87,16 @@ public class EditPantryItemActivity extends AppCompatActivity {
                                         setResult(RESULT_OK);
                                         finish();
                                     })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Failed to update item", Toast.LENGTH_SHORT).show();
-                                    });
+                                    .addOnFailureListener(e ->
+                                        Toast.makeText(this, "Failed to update item", Toast.LENGTH_SHORT).show());
                         } else {
                             Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error getting item", Toast.LENGTH_SHORT).show();
-                    });
+                    .addOnFailureListener(e ->
+                        Toast.makeText(this, "Error getting item", Toast.LENGTH_SHORT).show());
         });
 
     }
-
 
 }
