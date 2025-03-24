@@ -91,6 +91,8 @@ public class EditPantryItemActivity extends AppCompatActivity {
                                     .update(updatedData)
                                     .addOnSuccessListener(aVoid -> {
                                         Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
+                                        setResult(RESULT_OK);
+                                        finish();
                                     })
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(this, "Failed to update item", Toast.LENGTH_SHORT).show();

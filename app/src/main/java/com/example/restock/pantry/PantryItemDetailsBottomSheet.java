@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -18,11 +19,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class PantryItemDetailsBottomSheet extends BottomSheetDialogFragment {
 
     PantryItem item;
+    ActivityResultLauncher<Intent> editItemLauncher;
 
     public PantryItemDetailsBottomSheet() {}
 
-    public PantryItemDetailsBottomSheet(PantryItem item) {
+    public PantryItemDetailsBottomSheet(PantryItem item, ActivityResultLauncher<Intent> editItemLauncher) {
         this.item = item;
+        this.editItemLauncher = editItemLauncher;
     }
 
     @NonNull
@@ -41,10 +44,10 @@ public class PantryItemDetailsBottomSheet extends BottomSheetDialogFragment {
         quantityValue.setText(String.valueOf(item.getQuantity()));
 
         editButton.setOnClickListener(v -> {
-            // Open Edit Item Activity
             Intent intent = new Intent(getContext(), EditPantryItemActivity.class);
             intent.putExtra("pantryItem", item);
-            startActivity(intent);
+            editItemLauncher.launch(intent);
+            dismiss(); // Close bottom sheet
         });
 
         bottomSheetDialog.setContentView(view);

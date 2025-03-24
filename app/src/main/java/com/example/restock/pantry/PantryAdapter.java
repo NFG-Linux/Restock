@@ -1,9 +1,11 @@
 package com.example.restock.pantry;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +25,15 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
     List<PantryItem> pantryItemList;
     FirebaseFirestore db;
     FragmentManager fragmentManager;
+    ActivityResultLauncher<Intent> editItemLauncher;
 
     public PantryAdapter() {}
 
-    public PantryAdapter(List<PantryItem> items, FragmentManager fragmentManager) {
+    public PantryAdapter(List<PantryItem> items, FragmentManager fragmentManager, ActivityResultLauncher<Intent> editItemLauncher) {
         this.pantryItemList = items;
         this.db = FirebaseFirestore.getInstance();
         this.fragmentManager = fragmentManager;
+        this.editItemLauncher = editItemLauncher;
     }
 
     @Override
@@ -50,10 +54,15 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
 
         // long press listener -> open BottomSheet directly
         holder.itemView.setOnLongClickListener(view -> {
-            PantryItemDetailsBottomSheet bottomSheet = new PantryItemDetailsBottomSheet(item);
-            bottomSheet.show(fragmentManager, "PantryItemDetailsBottomSheet"); // Use fragmentManager directly
+            PantryItemDetailsBottomSheet bottomSheet = new PantryItemDetailsBottomSheet(item, editItemLauncher);
+            bottomSheet.show(fragmentManager, "PantryItemDetailsBottomSheet");
             return true;
         });
+
+    }
+
+    public interface OnEditItemClickListener {
+        void onEditItem(PantryItem item);
     }
 
     @Override

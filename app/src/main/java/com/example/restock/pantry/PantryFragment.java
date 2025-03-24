@@ -65,7 +65,8 @@ public class PantryFragment extends Fragment {
         RecyclerView recyclerView = binding.pantryRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         pantryItemList = new ArrayList<>();
-        adapter = new PantryAdapter(pantryItemList, getParentFragmentManager());
+        adapter = new PantryAdapter(pantryItemList, getParentFragmentManager(), editItemLauncher);
+
         recyclerView.setAdapter(adapter);
 
         loadUserPantryItems();
@@ -108,7 +109,6 @@ public class PantryFragment extends Fragment {
 
         // FAB
         FabMenuHelper.setupFabMenu(this, binding.addButton);
-
     }
 
     private void loadUserPantryItems() {
@@ -145,7 +145,12 @@ public class PantryFragment extends Fragment {
                 }
             });
 
-
+    private final ActivityResultLauncher<Intent> editItemLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    loadUserPantryItems();
+                }
+            });
 
     @Override
     public void onDestroyView() {
