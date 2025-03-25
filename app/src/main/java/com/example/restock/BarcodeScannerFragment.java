@@ -347,7 +347,6 @@ public class BarcodeScannerFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Add Item Details");
 
-
         final EditText productNameInput = new EditText(getContext());
         productNameInput.setHint("Product Name");
         final EditText brandInput = new EditText(getContext());
