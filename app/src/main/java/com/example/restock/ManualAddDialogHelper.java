@@ -2,6 +2,7 @@ package com.example.restock;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -151,23 +152,43 @@ public class ManualAddDialogHelper {
             if (existingQty.get() == null) existingQty.set(0L);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Enter Quantity");
-            builder.setMessage(snapshot.exists()
+            builder.setTitle("Enter Item Details");
+            String message = snapshot.exists()
                     ? "Current quantity: " + existingQty.get() + "\nHow many more to add?"
-                    : "How many do you want to add to your pantry?");
+                    : "How many do you want to add to your pantry?\nEnter the item's expiration date: ";
+            builder.setMessage(message);
+
+            LinearLayout layout = new LinearLayout(context);
+            layout.setOrientation(LinearLayout.VERTICAL);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(16, 16, 16, 16);
 
             final EditText quantityInput = new EditText(context);
             quantityInput.setHint("Quantity");
             quantityInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-            builder.setView(quantityInput);
+            quantityInput.setLayoutParams(params);
+            layout.addView(quantityInput);
+
+            final EditText expirationInput = new EditText(context);
+            expirationInput.setHint("Expiration Date mm/dd/yyyy");
+            expirationInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
+            expirationInput.setLayoutParams(params);
+            layout.addView(expirationInput);
+
+            builder.setView(layout);
 
             builder.setPositiveButton("Add", (dialog, which) -> {
                 String qtyText = quantityInput.getText().toString().trim();
+                String expText = expirationInput.getText().toString().trim();
                 if (!qtyText.isEmpty()) {
                     try {
                         int addQty = Integer.parseInt(qtyText);
                         if (snapshot.exists()) {
-                            pantryRef.update("quantity", existingQty.get() + addQty)
+                            pantryRef.update("quantity", existingQty.get() + addQty,
+                                    "expiration_date", expText)
                                     .addOnSuccessListener(aVoid -> {
                                         Toast.makeText(context, "Pantry quantity updated", Toast.LENGTH_SHORT).show();
 
@@ -191,6 +212,7 @@ public class ManualAddDialogHelper {
                             pantryItem.put("quantity", addQty);
                             pantryItem.put("user_id", auth.getCurrentUser().getUid());
                             pantryItem.put("email", userEmail);
+                            pantryItem.put("expiration_date", expText);
                             pantryItem.put("timestamp", FieldValue.serverTimestamp());
 
                             pantryRef.set(pantryItem)

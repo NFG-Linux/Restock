@@ -2,6 +2,7 @@ package com.example.restock;
 
 // BarcodeScannerFragment.java
 // import android.graphics.drawable.Drawable;
+import android.renderscript.ScriptGroup;
 import android.widget.EditText;
 // import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -251,16 +252,18 @@ public class BarcodeScannerFragment extends Fragment {
                                 String brand = documentSnapshot.getString("brand");
                                 String category = documentSnapshot.getString("category");
                                 String ingredients = documentSnapshot.getString("ingredients_text");
+                                String expDate = documentSnapshot.getString("expiration_date");
 
                                 Log.d(TAG, "Imported Barcode Details:");
                                 Log.d(TAG, "Product Name: " + productName);
                                 Log.d(TAG, "Brand: " + brand);
                                 Log.d(TAG, "Category: " + category);
                                 Log.d(TAG, "Ingredients: " + ingredients);
+                                Log.d(TAG, "Expiration Date: " + expDate);
 
                                 Log.d(TAG, "Found the item in imported_barcodes");
 
-                                showItemDetailsDialog(productName, brand, category, ingredients, barcode);
+                                showItemDetailsDialog(productName, brand, category, ingredients, barcode,  expDate);
                                 setOverlaySuccess();
                             } else {
                                 Log.d(TAG, "Didn't find in imported_barcodes, searching in user_created_barcodes");
@@ -292,14 +295,16 @@ public class BarcodeScannerFragment extends Fragment {
                                 String brand = documentSnapshot.getString("brand");
                                 String category = documentSnapshot.getString("category");
                                 String ingredients = documentSnapshot.getString("ingredients_text");
+                                String expDate = documentSnapshot.getString("expiration_date");
 
                                 Log.d(TAG, "User Created Barcode Details:");
                                 Log.d(TAG, "Product Name: " + productName);
                                 Log.d(TAG, "Brand: " + brand);
                                 Log.d(TAG, "Category: " + category);
                                 Log.d(TAG, "Ingredients: " + ingredients);
+                                Log.d(TAG, "Expiration Date: " + expDate);
 
-                                showItemDetailsDialog(productName, brand, category, ingredients, barcode);
+                                showItemDetailsDialog(productName, brand, category, ingredients, barcode, expDate);
                                 setOverlaySuccess();
                             } else {
                                 promptUserToAddBarcode(barcode);
@@ -351,6 +356,9 @@ public class BarcodeScannerFragment extends Fragment {
         categoryInput.setHint("Category");
         final EditText ingredientsInput = new EditText(getContext());
         ingredientsInput.setHint("Ingredients");
+        final EditText expirationInput = new EditText(getContext());
+        expirationInput.setHint("Expiration Date: mm/dd/yyyy");
+
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -358,6 +366,7 @@ public class BarcodeScannerFragment extends Fragment {
         layout.addView(brandInput);
         layout.addView(categoryInput);
         layout.addView(ingredientsInput);
+        layout.addView(expirationInput);
         builder.setView(layout);
 
 
@@ -366,7 +375,8 @@ public class BarcodeScannerFragment extends Fragment {
             String brand = brandInput.getText().toString();
             String category = categoryInput.getText().toString();
             String ingredients = ingredientsInput.getText().toString();
-            addItemToUserDatabase(barcode, productName, brand, category, ingredients);
+            String expDate = expirationInput.getText().toString();
+            addItemToUserDatabase(barcode, productName, brand, category, ingredients,expDate);
             resetScanner();
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> {
@@ -378,10 +388,10 @@ public class BarcodeScannerFragment extends Fragment {
         builder.show();
     }
 
-    private void showItemDetailsDialog(String productName, String brand, String category, String ingredients, String barcode) {
+    private void showItemDetailsDialog(String productName, String brand, String category, String ingredients, String barcode, String expDate) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Item Details")
-                .setMessage("Product: " + productName + "\nBrand: " + brand + "\nCategory: " + category + "\nIngredients: " + ingredients)
+                .setMessage("Product: " + productName + "\nBrand: " + brand + "\nCategory: " + category + "\nIngredients: " + ingredients + "\nExpiration Date: " + expDate)
                 .setPositiveButton("OK", (dialog, which) -> {
                     addItemToPantry(barcode, productName, 0);
                     resetScanner();
@@ -389,7 +399,7 @@ public class BarcodeScannerFragment extends Fragment {
                 .show();
     }
 
-    private void addItemToUserDatabase(String barcode, String productName, String brand, String category, String ingredients) {
+    private void addItemToUserDatabase(String barcode, String productName, String brand, String category, String ingredients, String expDate) {
         if (auth.getCurrentUser() == null) {
             return;
         }
@@ -405,7 +415,7 @@ public class BarcodeScannerFragment extends Fragment {
                                 .addOnSuccessListener(pantryDoc -> {
                                     Long existingQty = pantryDoc.getLong("quantity");
                                     if (existingQty == null) existingQty = 0L;
-                                    showUpdateQuantityDialog(barcode, productName, pantryDocId, existingQty);
+                                    showUpdateQuantityDialog(barcode, productName, pantryDocId, existingQty, expDate);
                                 })
                                 .addOnFailureListener(e -> Log.e(TAG, "Couldn't get item quantity", e));
                     } else {
@@ -415,6 +425,7 @@ public class BarcodeScannerFragment extends Fragment {
                         barcodeData.put("brand", brand);
                         barcodeData.put("category", category);
                         barcodeData.put("ingredients_text", ingredients);
+                        barcodeData.put("expiration_date", expDate);
                         barcodeData.put("added_by", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
                         barcodeData.put("timestamp", FieldValue.serverTimestamp());
 
@@ -426,8 +437,8 @@ public class BarcodeScannerFragment extends Fragment {
                                             barcodeResultTextView.setText("Item Added!");
                                             Log.d(TAG, "Item added successfully!");
                                             setOverlaySuccess();
-                                            showQuantityDialog(pantryDocId, productName);
-                                            showItemDetailsDialog(productName, brand, category, ingredients, barcode);
+                                            showQuantityDialog(pantryDocId, productName, expDate);
+                                            showItemDetailsDialog(productName, brand, category, ingredients, barcode, expDate);
                                         });
                                     }
                                 })
@@ -455,20 +466,40 @@ public class BarcodeScannerFragment extends Fragment {
                 });
     }
 
-    private void showQuantityDialog(String pantryDocId, String productName) {
+    private void showQuantityDialog(String pantryDocId, String productName, String expDate) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Enter Quantity");
-        builder.setMessage("How many of this item should we add to your pantry?");
+        builder.setTitle("Enter Details");
+        builder.setMessage("How many of this item should we add to your pantry?\nWhat is the item's expiration date?");
 
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        builder.setView(input);
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(16, 16, 16, 16);
+
+        final EditText quantityInput = new EditText(getContext());
+        quantityInput.setHint("Quantity");
+        quantityInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        quantityInput.setLayoutParams(params);
+        layout.addView(quantityInput);
+
+        final EditText expirationInput = new EditText(getContext());
+        expirationInput.setHint("mm/dd/yyyy");
+        expirationInput.setInputType(InputType.TYPE_CLASS_TEXT);
+        expirationInput.setLayoutParams(params);
+        layout.addView(expirationInput);
+
+        builder.setView(layout);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
-            String inputText = input.getText().toString();
-            if (!inputText.isEmpty()) {
+            String qtyText = quantityInput.getText().toString().trim();
+            String expText = expirationInput.getText().toString().trim();
+            if (!qtyText.isEmpty()) {
                 try {
-                    int quantity = Integer.parseInt(inputText);
+                    int quantity = Integer.parseInt(qtyText);
 
                     DocumentReference pantryRef = db.collection("pantry_items").document(pantryDocId);
 
@@ -476,6 +507,7 @@ public class BarcodeScannerFragment extends Fragment {
                     pantryItem.put("code", pantryDocId.split("-")[1]); // Extract barcode
                     pantryItem.put("product_name", productName);
                     pantryItem.put("quantity", quantity);
+                    pantryItem.put("expiration_date", expText);
                     pantryItem.put("user_id", auth.getCurrentUser().getUid());
                     pantryItem.put("email", auth.getCurrentUser().getEmail());
                     pantryItem.put("timestamp", FieldValue.serverTimestamp());
@@ -494,7 +526,7 @@ public class BarcodeScannerFragment extends Fragment {
         builder.show();
     }
 
-    private void showAlreadyExistsDialog(String pantryDocId, String productName) {
+    private void showAlreadyExistsDialog(String pantryDocId, String productName, String expDate) {
         db.collection("pantry_items").document(pantryDocId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
@@ -505,22 +537,44 @@ public class BarcodeScannerFragment extends Fragment {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setTitle("Item Already in Pantry");
                             builder.setMessage("This item is already in your pantry. Current quantity: " + String.valueOf(existingQty.get()) +
-                                    "\nHow many more would you like to add?");
+                                    "\nHow many more would you like to add?\nYou can update the expiration date if needed as well: ");
 
-                            final EditText input = new EditText(getContext());
-                            input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            builder.setView(input);
+                            LinearLayout layout = new LinearLayout(getContext());
+                            layout.setOrientation(LinearLayout.VERTICAL);
+
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                            );
+                            params.setMargins(16, 16, 16, 16);
+
+
+                            final EditText quantityInput = new EditText(getContext());
+                            quantityInput.setHint("Additional Quantity");
+                            quantityInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            quantityInput.setLayoutParams(params);
+                            layout.addView(quantityInput);
+
+                            final EditText expirationInput = new EditText(getContext());
+                            expirationInput.setHint("mm/dd/yyyy");
+                            expirationInput.setInputType(InputType.TYPE_CLASS_TEXT);
+                            expirationInput.setLayoutParams(params);
+                            layout.addView(expirationInput);
+
+                            builder.setView(layout);
 
                             builder.setPositiveButton("Update", (dialog, which) -> {
-                                String inputText = input.getText().toString();
-                                if (!inputText.isEmpty()) {
+                                String quantityText = quantityInput.getText().toString();
+                                String expText = expirationInput.getText().toString().trim();
+                                if (!quantityText.isEmpty()) {
                                     try {
-                                        int additionalQty = Integer.parseInt(inputText);
-                                        updatePantryQuantity(pantryDocId, existingQty.get(), additionalQty);
+                                        int additionalQty = Integer.parseInt(quantityText);
+                                        updatePantryQuantity(pantryDocId, existingQty.get(), additionalQty, expText);
                                     } catch (NumberFormatException e) {
                                         Toast.makeText(getContext(), "Invalid quantity entered", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+                                resetScanner();
                             });
 
                             builder.setNegativeButton("Cancel", (dialog, which) -> resetScanner());
@@ -548,30 +602,52 @@ public class BarcodeScannerFragment extends Fragment {
                 Long existingQty = documentSnapshot.getLong("quantity");
                 if (existingQty == null) existingQty = 0L;
 
-                Log.d(TAG, "Item in pantry already, asking user to update quantity");
-                showAlreadyExistsDialog(pantryDocId, productName);
+                String expDate = documentSnapshot.getString("expiration_date");
+                if (expDate == null) expDate = "";
+
+                Log.d(TAG, "Item in pantry already, asking user to update quantity and expiration date");
+                showAlreadyExistsDialog(pantryDocId, productName, expDate);
             } else {
-                Log.d(TAG, "New item; asking user for initial quantity");
-                showQuantityDialog(pantryDocId, productName);
+                Log.d(TAG, "New item; asking user for initial quantity and expiration date");
+                showQuantityDialog(pantryDocId, productName, "");
             }
         }).addOnFailureListener(e -> Log.e(TAG, "Error checking pantry_items collection", e));
     }
 
-    private void showUpdateQuantityDialog(String barcode, String productName, String pantryDocId, Long existingQty) {
+    private void showUpdateQuantityDialog(String barcode, String productName, String pantryDocId, Long existingQty, String expDate) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update Item Quantity");
-        builder.setMessage("This item was found in your pantry. \nCurrent quantity: " + existingQty + "\nHow many would you like to add?");
+        builder.setTitle("Update Item Details");
+        builder.setMessage("This item was found in your pantry. \nCurrent quantity: " + existingQty + "\nHow many would you like to add?\nExpiration Date? ");
 
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        builder.setView(input);
+        LinearLayout layout = new LinearLayout(requireContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        final EditText quantityInput = new EditText(requireContext());
+        quantityInput.setHint("Quantity");
+        quantityInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        quantityInput.setLayoutParams(params);
+        layout.addView(quantityInput);
+
+        final EditText expirationInput = new EditText(requireContext());
+        expirationInput.setHint("mm/dd/yyyy");
+        expirationInput.setInputType(InputType.TYPE_CLASS_TEXT);
+        expirationInput.setLayoutParams(params);
+        layout.addView(expirationInput);
+
+        builder.setView(layout);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
-            String inputText = input.getText().toString();
-            if (!inputText.isEmpty()) {
+            String qtyText = quantityInput.getText().toString().trim();
+            String expText = expirationInput.getText().toString().trim();
+            if (!qtyText.isEmpty()) {
                 try {
-                    int additionalQty = Integer.parseInt(inputText);
-                    updatePantryQuantity(pantryDocId, existingQty, additionalQty);
+                    int additionalQty = Integer.parseInt(qtyText);
+                    updatePantryQuantity(pantryDocId, existingQty, additionalQty, expText);
                 } catch (NumberFormatException e) {
                     Toast.makeText(getContext(), "Invalid quantity entered", Toast.LENGTH_SHORT).show();
                 }
@@ -582,14 +658,20 @@ public class BarcodeScannerFragment extends Fragment {
         builder.show();
     }
 
-    private void updatePantryQuantity(String pantryDocId, Long existingQty, int additionalQty) {
+    private void updatePantryQuantity(String pantryDocId, Long existingQty, int additionalQty, String expDate) {
         DocumentReference pantryRef = db.collection("pantry_items").document(pantryDocId);
 
         Long newQty = existingQty + additionalQty;
 
-        pantryRef.update("quantity", newQty)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "Updated item quantity to: " + newQty))
-                .addOnFailureListener(e -> Log.e(TAG, "Error updating pantry quantity", e));
+        if (expDate != null && !expDate.trim().isEmpty()) {
+            pantryRef.update("quantity", newQty, "expiration_date", expDate)
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Updated item quantity to: " + newQty + " and expiration date set to: " + expDate))
+                    .addOnFailureListener(e -> Log.e(TAG, "Error updating pantry details", e));
+        } else {
+            pantryRef.update("quantity", newQty)
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Updated quantity to: " + newQty))
+                    .addOnFailureListener(e -> Log.e(TAG, "Error updating pantry quantity", e));
+        }
     }
 
     private void resetScanner() {
