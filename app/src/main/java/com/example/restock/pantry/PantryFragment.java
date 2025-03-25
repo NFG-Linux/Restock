@@ -15,6 +15,8 @@ import com.example.restock.FabMenuHelper;
 import com.example.restock.R;
 
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +72,19 @@ public class PantryFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         loadUserPantryItems();
+
+        binding.searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchPantryItems(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
 
         return view;
     }
@@ -133,6 +148,30 @@ public class PantryFragment extends Fragment {
                 .addOnFailureListener(e ->
                     Toast.makeText(getContext(), "Couldn't load pantry items", Toast.LENGTH_SHORT).show()
                 );
+    }
+
+    private void searchPantryItems(String searchText) {
+        String userEmail = auth.getCurrentUser().getEmail();
+        if (searchText.trim().isEmpty()) {
+            loadUserPantryItems();
+            return;
+        }
+        db.collection("pantry_items")
+                .whereEqualTo("email", userEmail)
+                .orderBy("product_name")
+                .startAt(searchText)
+                .endAt(searchText + "\uf8ff")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    pantryItemList.clear();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        PantryItem item = document.toObject(PantryItem.class);
+                        pantryItemList.add(item);
+                    }
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "No items found", Toast.LENGTH_SHORT).show());
     }
 
     private final ActivityResultLauncher<Intent> speechRecognitionLauncher =
