@@ -361,7 +361,6 @@ public class BarcodeScannerFragment extends Fragment {
         final EditText expirationInput = new EditText(getContext());
         expirationInput.setHint("Expiration Date: mm/dd/yyyy");
 
-
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(productNameInput);
@@ -370,7 +369,6 @@ public class BarcodeScannerFragment extends Fragment {
         layout.addView(ingredientsInput);
         layout.addView(expirationInput);
         builder.setView(layout);
-
 
         builder.setPositiveButton("Add", (dialog, which) -> {
             String productName = productNameInput.getText().toString();
