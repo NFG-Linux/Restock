@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_PantryFragment_to_BarcodeScannerFragment"
             app:destination="@id/BarcodeScannerFragment" />
+        <action
+            android:id="@+id/action_PantryRefresh"
+            app:destination="@id/pantryFragment"/>
     </fragment>
 
     <!-- List Screen -->

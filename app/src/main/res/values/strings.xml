@@ -105,6 +105,11 @@
     <string name="profile_monthly_budget_hint">Monthly Budget</string>
     <string name="dietary_preference_prompt">Dietary Preference</string>
     <string name="profile_image_description">Profile image</string>
+    <string name="list_fab_addFromPantry">Add from Pantry</string>
+    <string name="list_fab_clearList">Clear List</string>
+    <string name="delete_item">Delete item</string>
+    <string name="quantity_hint">Qty</string>
+    <string name="quantity_description">Quantity of item</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

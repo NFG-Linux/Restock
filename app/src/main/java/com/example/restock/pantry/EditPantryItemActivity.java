@@ -79,16 +79,29 @@ public class EditPantryItemActivity extends AppCompatActivity {
                             DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
                             String documentId = document.getId();  // Get the document ID
 
-                            // Update the item data
-                            db.collection("pantry_items").document(documentId)
-                                    .update(updatedData)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
-                                        setResult(RESULT_OK);
-                                        finish();
-                                    })
-                                    .addOnFailureListener(e ->
-                                        Toast.makeText(this, "Failed to update item", Toast.LENGTH_SHORT).show());
+                            //if quantity is set to 0, delete the item from pantry_items
+                            if (updatedQuantity == 0) {
+                                db.collection("pantry_items").document(documentId)
+                                        .delete()
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(this, "Quantity 0, item removed from pantry", Toast.LENGTH_SHORT).show();
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        })
+                                        .addOnFailureListener(e ->
+                                                Toast.makeText(this, "Could not delete pantry item", Toast.LENGTH_SHORT).show());
+                            } else {
+                                // Update the item data
+                                db.collection("pantry_items").document(documentId)
+                                        .update(updatedData)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        })
+                                        .addOnFailureListener(e ->
+                                                Toast.makeText(this, "Failed to update item", Toast.LENGTH_SHORT).show());
+                            }
                         } else {
                             Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
                         }

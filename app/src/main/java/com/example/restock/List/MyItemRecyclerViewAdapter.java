@@ -1,68 +1,53 @@
 package com.example.restock.List;
 
 //MyItemRecyclerViewAdapter(list).java
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.restock.R;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.restock.databinding.ListItemBinding;
-import com.example.restock.placeholder.PlaceholderContent.PlaceholderItem;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<PlaceholderItem> mValues;
-    private final Set<Integer> selectedItems = new HashSet<>();
+    private final List<GroceryItem> mValues;
+    private final OnItemClickListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<PlaceholderItem> items) {
+    public MyItemRecyclerViewAdapter(List<GroceryItem> items, OnItemClickListener listener) {
         mValues = items;
+        mListener = listener;
     }
 
-    @Override
     @NonNull
+    @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         ListItemBinding binding = ListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        PlaceholderItem item = mValues.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        GroceryItem item = mValues.get(position);
 
-        holder.mItemName.setText(item.content);
-        holder.mItem = item;
-        holder.mItemName.setText(item.content);
-        holder.mItemImage.setImageResource(R.drawable.img_placeholder);
+        holder.mItemName.setText(item.getProduct_name());
+        holder.mQuantity.setText(String.valueOf(item.getQuantity()));
+        holder.mCheckBox.setChecked(item.isChecked());
 
-        // Apply strikethrough if selected
-        if (selectedItems.contains(position)) {
-            holder.mItemName.setPaintFlags(holder.mItemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.mItemName.setTextColor(Color.RED); // Set strikethrough text color to red
-        } else {
-            holder.mItemName.setPaintFlags(holder.mItemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.mItemName.setTextColor(Color.BLACK); // Set regular text color to black
-        }
-
-        // Handle item click to toggle strikethrough
-        holder.mView.setOnClickListener(v -> {
-            if (selectedItems.contains(position)) {
-                selectedItems.remove(position);
-            } else {
-                selectedItems.add(position);
+        holder.mCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (mListener != null) {
+                mListener.onCheckChange(item, isChecked);
             }
-            notifyItemChanged(position);
+        });
+
+        holder.mDeleteIcon.setOnClickListener(v -> {
+            if (mListener != null) {
+                mListener.onDeleteClick(item);
+            }
         });
     }
 
@@ -72,24 +57,30 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView mItemImage;
         public final TextView mItemName;
-        public final ImageView mEditIcon;
-        public PlaceholderItem mItem;
+        public final TextView mQuantity;
+        public final CheckBox mCheckBox;
+        public final ImageView mDeleteIcon;
         public final View mView;
 
         public ViewHolder(ListItemBinding binding) {
             super(binding.getRoot());
-            mItemImage = binding.itemImage;
             mItemName = binding.itemName;
-            mEditIcon = binding.editIcon;
+            mQuantity = binding.quantity;
+            mCheckBox = binding.itemCheckbox;
+            mDeleteIcon = binding.deleteIcon;
             mView = binding.getRoot();
         }
 
-        @Override
         @NonNull
+        @Override
         public String toString() {
             return super.toString() + " '" + mItemName.getText() + "'";
         }
+    }
+
+    public interface OnItemClickListener {
+        void onCheckChange(GroceryItem item, boolean isChecked);
+        void onDeleteClick(GroceryItem item);
     }
 }
