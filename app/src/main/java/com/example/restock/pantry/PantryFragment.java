@@ -136,6 +136,12 @@ public class PantryFragment extends Fragment {
                     pantryItemList.clear();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         PantryItem item = document.toObject(PantryItem.class);
+
+                        // expiration_date is retrieved
+                        if (document.contains("expiration_date")) {
+                            item.setExpiration_date(document.getString("expiration_date"));
+                        }
+
                         pantryItemList.add(item);
                     }
 
@@ -146,9 +152,10 @@ public class PantryFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e ->
-                    Toast.makeText(getContext(), "Couldn't load pantry items", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(getContext(), "Couldn't load pantry items", Toast.LENGTH_SHORT).show()
                 );
     }
+
 
     private void searchPantryItems(String searchText) {
         String userEmail = auth.getCurrentUser().getEmail();

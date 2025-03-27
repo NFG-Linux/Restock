@@ -58,8 +58,15 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
             PantryItemDetailsBottomSheet bottomSheet = new PantryItemDetailsBottomSheet(item, editItemLauncher);
             bottomSheet.show(fragmentManager, "PantryItemDetailsBottomSheet");
             return true;
+
         });
 
+        // Display expiration date
+        if (item.getExpiration_date() != null && !item.getExpiration_date().isEmpty()) {
+            holder.itemExpirationDate.setText(item.getExpiration_date());
+        } else {
+            holder.itemExpirationDate.setText("No expiration date");
+        }
     }
 
     @Override
@@ -71,12 +78,14 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
         public final ImageView itemImage;
         public final TextView itemName;
         public final TextView itemQuantity;
+        public final TextView itemExpirationDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = itemView.findViewById(R.id.item_image);
             itemName = itemView.findViewById(R.id.item_name);
             itemQuantity = itemView.findViewById(R.id.item_quantity);
+            itemExpirationDate = itemView.findViewById(R.id.item_expiration_date);
         }
     }
 }
