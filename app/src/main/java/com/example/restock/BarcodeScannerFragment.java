@@ -2,18 +2,15 @@ package com.example.restock;
 
 // BarcodeScannerFragment.java
 // import android.graphics.drawable.Drawable;
-import android.renderscript.ScriptGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-// import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
-// import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +45,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.SetOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
@@ -66,9 +64,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+
 
 public class BarcodeScannerFragment extends Fragment {
 
@@ -437,7 +434,8 @@ public class BarcodeScannerFragment extends Fragment {
                                             barcodeResultTextView.setText("Item Added!");
                                             Log.d(TAG, "Item added successfully!");
                                             setOverlaySuccess();
-                                            showQuantityDialog(pantryDocId, productName, expDate);
+                                            // Corrected line:
+                                            showQuantityDialog(pantryDocId, productName, brand, category, ingredients, barcode, expDate);
                                             showItemDetailsDialog(productName, brand, category, ingredients, barcode, expDate);
                                         });
                                     }
@@ -466,10 +464,9 @@ public class BarcodeScannerFragment extends Fragment {
                 });
     }
 
-    private void showQuantityDialog(String pantryDocId, String productName, String expDate) {
+    private void showQuantityDialog(String pantryDocId, String productName, String brand, String category, String ingredients, String barcode, String expDate) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Enter Details");
-
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -479,13 +476,6 @@ public class BarcodeScannerFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(16, 16, 16, 16);
-
-        final android.widget.RadioGroup operationGroup = new android.widget.RadioGroup(getContext());
-        operationGroup.setOrientation(android.widget.RadioGroup.HORIZONTAL);
-        android.widget.RadioButton addButton = new android.widget.RadioButton(getContext());
-        addButton.setText("Add");
-
-        layout.addView(operationGroup);
 
         final EditText quantityInput = new EditText(getContext());
         quantityInput.setHint("Quantity");
@@ -497,6 +487,9 @@ public class BarcodeScannerFragment extends Fragment {
         expirationInput.setHint("mm/dd/yyyy");
         expirationInput.setInputType(InputType.TYPE_CLASS_TEXT);
         expirationInput.setLayoutParams(params);
+        if(expDate != null && !expDate.trim().isEmpty()){
+            expirationInput.setText(expDate);
+        }
         layout.addView(expirationInput);
 
         builder.setView(layout);
@@ -507,8 +500,7 @@ public class BarcodeScannerFragment extends Fragment {
             if (!qtyText.isEmpty()) {
                 try {
                     int changeQty = Integer.parseInt(qtyText);
-                    boolean isAddition = addButton.isChecked();
-                    updatePantryQuantity(pantryDocId, 0L, changeQty, isAddition, expText);
+                    updatePantryQuantity(pantryDocId, productName, brand, category, ingredients, barcode, 0L, changeQty, expText, auth.getCurrentUser().getEmail());
 
                 } catch (NumberFormatException e) {
                     Toast.makeText(getContext(), "Invalid quantity entered", Toast.LENGTH_SHORT).show();
@@ -521,7 +513,7 @@ public class BarcodeScannerFragment extends Fragment {
         builder.show();
     }
 
-    private void showAlreadyExistsDialog(String pantryDocId, String productName, String expDate) {
+    private void showAlreadyExistsDialog(String barcode, String pantryDocId, String productName, String expDate) {
         db.collection("pantry_items").document(pantryDocId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
@@ -586,7 +578,30 @@ public class BarcodeScannerFragment extends Fragment {
                                     try {
                                         int changeQty = Integer.parseInt(quantityText);
                                         boolean isAddition = addButton.isChecked();
-                                        updatePantryQuantity(pantryDocId, 0L, changeQty, isAddition, expText);
+
+                                        // Retrieve missing data from database
+                                        db.collection("user_created_barcodes").document(barcode).get()
+                                                .addOnSuccessListener(documentSnapshot2 -> {
+                                                    if(documentSnapshot2.exists()){
+                                                        String brand = documentSnapshot2.getString("brand");
+                                                        String category = documentSnapshot2.getString("category");
+                                                        String ingredients = documentSnapshot2.getString("ingredients_text");
+                                                        updatePantryQuantity(pantryDocId, productName, brand, category, ingredients, barcode, existingQty.get(), changeQty, expText, auth.getCurrentUser().getEmail()); //Pass email
+                                                    } else {
+                                                        db.collection("imported_barcodes").document(barcode).get()
+                                                                .addOnSuccessListener(importedDoc -> {
+                                                                    if(importedDoc.exists()){
+                                                                        String brand = importedDoc.getString("brand");
+                                                                        String category = importedDoc.getString("category");
+                                                                        String ingredients = importedDoc.getString("ingredients_text");
+                                                                        updatePantryQuantity(pantryDocId, productName, brand, category, ingredients, barcode, existingQty.get(), changeQty, expText, auth.getCurrentUser().getEmail()); //Pass email
+                                                                    } else {
+                                                                        Log.e(TAG, "neither user or imported barcode found");
+                                                                    }
+                                                                });
+                                                    }
+                                                });
+
                                     } catch (NumberFormatException e) {
                                         Toast.makeText(getContext(), "Invalid quantity entered", Toast.LENGTH_SHORT).show();
                                     }
@@ -612,23 +627,33 @@ public class BarcodeScannerFragment extends Fragment {
         String namePull = userEmail.split("@")[0];
 
         String pantryDocId = namePull + "-" + barcode;
-        DocumentReference pantryRef = db.collection("pantry_items").document(pantryDocId);
 
-        pantryRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                Long existingQty = documentSnapshot.getLong("quantity");
-                if (existingQty == null) existingQty = 0L;
+        db.collection("user_created_barcodes").document(barcode).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String brand = documentSnapshot.getString("brand");
+                        String category = documentSnapshot.getString("category");
+                        String ingredients = documentSnapshot.getString("ingredients_text");
+                        String expDate = documentSnapshot.getString("expiration_date");
 
-                String expDate = documentSnapshot.getString("expiration_date");
-                if (expDate == null) expDate = "";
+                        showQuantityDialog(pantryDocId, productName, brand, category, ingredients, barcode, expDate);
+                    } else {
+                        db.collection("imported_barcodes").document(barcode).get()
+                                .addOnSuccessListener(importedDoc -> {
+                                    if(importedDoc.exists()){
+                                        String brand = importedDoc.getString("brand");
+                                        String category = importedDoc.getString("category");
+                                        String ingredients = importedDoc.getString("ingredients_text");
+                                        String expDate = importedDoc.getString("expiration_date");
 
-                Log.d(TAG, "Item in pantry already, asking user to update quantity and expiration date");
-                showAlreadyExistsDialog(pantryDocId, productName, expDate);
-            } else {
-                Log.d(TAG, "New item; asking user for initial quantity and expiration date");
-                showQuantityDialog(pantryDocId, productName, "");
-            }
-        }).addOnFailureListener(e -> Log.e(TAG, "Error checking pantry_items collection", e));
+                                        showQuantityDialog(pantryDocId, productName, brand, category, ingredients, barcode, expDate);
+                                    } else {
+                                        Log.e(TAG, "neither user or imported barcode found");
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error checking user_created_barcodes collection", e));
     }
 
     private void showUpdateQuantityDialog(String barcode, String productName, String pantryDocId, Long existingQty, String expDate) {
@@ -679,7 +704,29 @@ public class BarcodeScannerFragment extends Fragment {
                 try {
                     int changeQty = Integer.parseInt(qtyText);
                     boolean isAddition = addButton.isChecked();
-                    updatePantryQuantity(pantryDocId, existingQty, changeQty, isAddition, expText);
+                    //Retrieve the rest of the data from the database.
+                    db.collection("user_created_barcodes").document(barcode).get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()){
+                                    String brand = documentSnapshot.getString("brand");
+                                    String category = documentSnapshot.getString("category");
+                                    String ingredients = documentSnapshot.getString("ingredients_text");
+                                    updatePantryQuantity(pantryDocId, productName, brand, category, ingredients, barcode, existingQty, changeQty, expText, auth.getCurrentUser().getEmail()); //Pass email
+                                } else {
+                                    db.collection("imported_barcodes").document(barcode).get()
+                                            .addOnSuccessListener(importedDoc -> {
+                                                if(importedDoc.exists()){
+                                                    String brand = importedDoc.getString("brand");
+                                                    String category = importedDoc.getString("category");
+                                                    String ingredients = importedDoc.getString("ingredients_text");
+                                                    updatePantryQuantity(pantryDocId, productName, brand, category, ingredients, barcode, existingQty, changeQty, expText, auth.getCurrentUser().getEmail()); //Pass email
+                                                } else {
+                                                    Log.e(TAG, "neither user or imported barcode found");
+                                                }
+                                            });
+                                }
+                            });
+
                 } catch (NumberFormatException e) {
                     Toast.makeText(getContext(), "Invalid quantity entered", Toast.LENGTH_SHORT).show();
                 }
@@ -689,25 +736,26 @@ public class BarcodeScannerFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialog, which) -> resetScanner());
         builder.show();
     }
-
-    private void updatePantryQuantity(String pantryDocId, Long existingQty, int changeQty, boolean isAddition, String expDate) {
+    private void updatePantryQuantity(String pantryDocId, String productName, String brand, String category, String ingredients, String barcode, Long existingQty, int changeQty, String expText, String email) {
         DocumentReference pantryRef = db.collection("pantry_items").document(pantryDocId);
 
-        Long newQty = isAddition ? existingQty + changeQty : existingQty - changeQty;
+        Long newQty = existingQty + changeQty;
 
-        if (newQty <= 0) {
-            pantryRef.delete()
-                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Quantity 0, item removed from user_pantry"))
-                    .addOnFailureListener(e -> Log.e(TAG, "Error deleting from pantry_items", e));
-        } else if (expDate != null && !expDate.trim().isEmpty()) {
-            pantryRef.update("quantity", newQty, "expiration_date", expDate)
-                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Updated item quantity to: " + newQty + " and expiration date set to: " + expDate))
-                    .addOnFailureListener(e -> Log.e(TAG, "Error updating pantry details", e));
-        } else {
-            pantryRef.update("quantity", newQty)
-                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Updated quantity to: " + newQty))
-                    .addOnFailureListener(e -> Log.e(TAG, "Error updating pantry quantity", e));
-        }
+        Map<String, Object> pantryItem = new HashMap<>();
+        pantryItem.put("product_name", productName);
+        pantryItem.put("brand", brand);
+        pantryItem.put("category", category);
+        pantryItem.put("ingredients_text", ingredients);
+        pantryItem.put("code", barcode);
+        pantryItem.put("quantity", newQty);
+        pantryItem.put("expiration_date", expText);
+        pantryItem.put("added_by", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+        pantryItem.put("timestamp", FieldValue.serverTimestamp());
+        pantryItem.put("email", email); // Add email field here
+
+        pantryRef.set(pantryItem, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Pantry item updated successfully"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating pantry item", e));
     }
 
     private void resetScanner() {
