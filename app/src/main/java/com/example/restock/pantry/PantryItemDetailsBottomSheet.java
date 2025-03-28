@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 import com.example.restock.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 // PantryItemDetailsBottomSheet.java
 public class PantryItemDetailsBottomSheet extends BottomSheetDialogFragment {
 
@@ -37,11 +40,37 @@ public class PantryItemDetailsBottomSheet extends BottomSheetDialogFragment {
         // Bind Views
         TextView nameValue = view.findViewById(R.id.item_name_value);
         TextView quantityValue = view.findViewById(R.id.item_quantity_value);
+        TextView ingredientsValue = view.findViewById(R.id.item_ingredients_value);
+        TextView dateAddedValue = view.findViewById(R.id.item_date_added_value);
+        TextView barcodeValue = view.findViewById(R.id.item_barcode_value);
         Button editButton = view.findViewById(R.id.edit_button);
+
 
         // Set values
         nameValue.setText(item.getProduct_name());
         quantityValue.setText(String.valueOf(item.getQuantity()));
+
+        // set ingredients
+        if (item.getIngredientsText() != null && !item.getIngredientsText().isEmpty()) {
+            ingredientsValue.setText(item.getIngredientsText());
+        } else {
+            ingredientsValue.setText("No ingredients available");
+        }
+
+        // set timestamp
+        if (item.getTimestamp() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy 'at' hh:mm a", Locale.getDefault());
+            dateAddedValue.setText(sdf.format(item.getTimestamp()));
+        } else {
+            dateAddedValue.setText("Date added not available");
+        }
+
+        // Set barcode
+        if (item.getCode() != null && !item.getCode().isEmpty()) {
+            barcodeValue.setText(item.getCode());
+        } else {
+            barcodeValue.setText("Barcode not available");
+        }
 
         editButton.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), EditPantryItemActivity.class);

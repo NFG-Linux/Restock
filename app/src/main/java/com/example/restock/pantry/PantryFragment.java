@@ -142,6 +142,17 @@ public class PantryFragment extends Fragment {
                             item.setExpiration_date(document.getString("expiration_date"));
                         }
 
+                        // ingredients_text is retrieved
+                        if (document.contains("ingredients_text")) {
+                            item.setIngredientsText(document.getString("ingredients_text"));
+                        }
+
+
+                        // Retrieve timestamp field
+                        if (document.contains("timestamp")) {
+                            item.setTimestamp(document.getDate("timestamp")); // Store as Date object
+                        }
+
                         pantryItemList.add(item);
                     }
 

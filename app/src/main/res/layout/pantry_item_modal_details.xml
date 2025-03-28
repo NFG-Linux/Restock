@@ -41,11 +41,62 @@
             android:text="@string/item_quantity_value"
             android:layout_marginBottom="12dp"/>
 
+        <!-- Ingredients -->
+        <TextView
+            android:id="@+id/item_ingredients_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredients:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/item_ingredients_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingredients Info"
+            android:layout_marginBottom="12dp"
+            android:maxLines="5"
+            android:ellipsize="end"/>
+
+        <!-- Date Added -->
+        <TextView
+            android:id="@+id/item_date_added_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Added:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/item_date_added_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="mm/dd/yy"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Barcode -->
+        <TextView
+            android:id="@+id/item_barcode_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Barcode:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/item_barcode_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0000000000000"
+            android:layout_marginBottom="12dp"/>
+
         <!-- Edit Button -->
         <Button
             android:id="@+id/edit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit_button"/>
+
     </LinearLayout>
 </ScrollView>
