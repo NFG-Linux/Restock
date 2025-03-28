@@ -127,7 +127,13 @@ public class PantryFragment extends Fragment {
     }
 
     private void loadUserPantryItems() {
-        String userEmail = auth.getCurrentUser().getEmail();
+        String userEmail;
+        if (auth.getCurrentUser() != null) {
+            userEmail = auth.getCurrentUser().getEmail();
+        } else {
+            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         db.collection("pantry_items")
                 .whereEqualTo("email", userEmail)
@@ -167,9 +173,15 @@ public class PantryFragment extends Fragment {
                 );
     }
 
-
     private void searchPantryItems(String searchText) {
-        String userEmail = auth.getCurrentUser().getEmail();
+        String userEmail;
+        if (auth.getCurrentUser() != null) {
+            userEmail = auth.getCurrentUser().getEmail();
+        } else {
+            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (searchText.trim().isEmpty()) {
             loadUserPantryItems();
             return;

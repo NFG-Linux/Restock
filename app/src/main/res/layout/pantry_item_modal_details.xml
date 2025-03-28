@@ -46,7 +46,7 @@
             android:id="@+id/item_ingredients_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredients:"
+            android:text="@string/item_ingredients_label"
             android:textStyle="bold"
             android:layout_marginTop="8dp"/>
 
@@ -54,7 +54,7 @@
             android:id="@+id/item_ingredients_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ingredients Info"
+            android:text="@string/item_ingredients_value"
             android:layout_marginBottom="12dp"
             android:maxLines="5"
             android:ellipsize="end"/>
@@ -64,7 +64,7 @@
             android:id="@+id/item_date_added_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date Added:"
+            android:text="@string/item_date_added_label"
             android:textStyle="bold"
             android:layout_marginTop="8dp"/>
 
@@ -72,7 +72,7 @@
             android:id="@+id/item_date_added_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="mm/dd/yy"
+            android:text="@string/item_date_added_value"
             android:layout_marginBottom="12dp"/>
 
         <!-- Barcode -->
@@ -80,7 +80,7 @@
             android:id="@+id/item_barcode_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Barcode:"
+            android:text="@string/item_barcode_label"
             android:textStyle="bold"
             android:layout_marginTop="8dp"/>
 
@@ -88,7 +88,7 @@
             android:id="@+id/item_barcode_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0000000000000"
+            android:text="@string/item_barcode_value"
             android:layout_marginBottom="12dp"/>
 
         <!-- Edit Button -->

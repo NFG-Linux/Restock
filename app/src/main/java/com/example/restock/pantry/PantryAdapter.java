@@ -65,7 +65,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
         if (item.getExpiration_date() != null && !item.getExpiration_date().isEmpty()) {
             holder.itemExpirationDate.setText(item.getExpiration_date());
         } else {
-            holder.itemExpirationDate.setText("No expiration date");
+            holder.itemExpirationDate.setText(holder.itemView.getContext().getString(R.string.no_expiration_date));
         }
     }
 

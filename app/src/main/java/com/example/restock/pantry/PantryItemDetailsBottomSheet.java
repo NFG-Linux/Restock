@@ -3,7 +3,6 @@ package com.example.restock.pantry;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,7 +34,7 @@ public class PantryItemDetailsBottomSheet extends BottomSheetDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog bottomSheetDialog = super.onCreateDialog(savedInstanceState);
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.pantry_item_modal_details, null);
+        View view = View.inflate(getContext(), R.layout.pantry_item_modal_details, null);
 
         // Bind Views
         TextView nameValue = view.findViewById(R.id.item_name_value);
@@ -54,7 +53,7 @@ public class PantryItemDetailsBottomSheet extends BottomSheetDialogFragment {
         if (item.getIngredientsText() != null && !item.getIngredientsText().isEmpty()) {
             ingredientsValue.setText(item.getIngredientsText());
         } else {
-            ingredientsValue.setText("No ingredients available");
+            ingredientsValue.setText(getString(R.string.no_ingredients_available));
         }
 
         // set timestamp
@@ -62,14 +61,14 @@ public class PantryItemDetailsBottomSheet extends BottomSheetDialogFragment {
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy 'at' hh:mm a", Locale.getDefault());
             dateAddedValue.setText(sdf.format(item.getTimestamp()));
         } else {
-            dateAddedValue.setText("Date added not available");
+            dateAddedValue.setText(getString(R.string.no_date_available));
         }
 
         // Set barcode
         if (item.getCode() != null && !item.getCode().isEmpty()) {
             barcodeValue.setText(item.getCode());
         } else {
-            barcodeValue.setText("Barcode not available");
+            barcodeValue.setText(getString(R.string.no_date_available));
         }
 
         editButton.setOnClickListener(v -> {
