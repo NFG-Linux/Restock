@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.legacy.support.v4)
     implementation(libs.recyclerview)
     implementation(libs.play.services.maps)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -62,6 +64,12 @@ dependencies {
     //google auth
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     implementation("com.google.android.gms:play-services-auth:20.5.0")
+    // CameraX dependencies
+    implementation("androidx.camera:camera-core:1.4.1")
+    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.camera:camera-lifecycle:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")
+    implementation("androidx.camera:camera-extensions:1.4.1")
     //barcode scanner
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
     implementation("com.google.firebase:firebase-firestore")
@@ -71,4 +79,11 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps")
         //dependencies of above google maps changes
 
+    // Guava dependency
+    implementation("com.google.guava:guava:31.0.1-android")
+
+    //image for profile fragment
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 }

@@ -7,6 +7,27 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FirstFragment">
 
+    <!-- Global Actions -->
+    <action
+        android:id="@+id/action_global_listFragment"
+        app:destination="@id/listFragment" />
+
+    <action
+        android:id="@+id/action_global_pantryFragment"
+        app:destination="@id/pantryFragment" />
+
+    <action
+        android:id="@+id/action_global_storeFragment"
+        app:destination="@id/storeFragment" />
+
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment" />
+
+    <action
+        android:id="@+id/action_global_notificationFragment"
+        app:destination="@id/notificationFragment" />
+
     <!-- Welcome Screen -->
     <fragment
         android:id="@+id/FirstFragment"
@@ -30,12 +51,16 @@
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.example.restock.LoginFragment"
-        android.label="Login"
+        android:label="Login"
         tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_LoginFragment_to_PantryFragment"
             app:destination="@id/pantryFragment" />
+
+        <action
+            android:id="@+id/action_LoginFragment_to_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
     </fragment>
 
     <!-- Register Screen -->
@@ -53,21 +78,24 @@
     <!-- Pantry Screen (Home screen) -->
     <fragment
         android:id="@+id/pantryFragment"
-        android:name="com.example.restock.PantryFragment"
+        android:name="com.example.restock.pantry.PantryFragment"
         android:label="Pantry"
-        tools:layout="@layout/fragment_pantry">
+        tools:layout="@layout/pantry_fragment">
 
         <action
             android:id="@+id/action_PantryFragment_to_BarcodeScannerFragment"
             app:destination="@id/BarcodeScannerFragment" />
+        <action
+            android:id="@+id/action_PantryRefresh"
+            app:destination="@id/pantryFragment"/>
     </fragment>
 
-    <!-- Grocery List Screen -->
+    <!-- List Screen -->
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.restock.ListFragment"
+        android:name="com.example.restock.List.ListFragment"
         android:label="List"
-        tools:layout="@layout/fragment_list">
+        tools:layout="@layout/list_fragment">
     </fragment>
 
     <!-- Store Screen -->
@@ -85,4 +113,21 @@
         android:label="Barcode Scanner"
         tools:layout="@layout/fragment_barcode_scanner">
     </fragment>
+
+    <!-- Profile Screen -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.restock.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
+
+    <!-- Notification Screen -->
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.restock.notification.NotificationFragment"
+        android:label="Notifications"
+        tools:layout="@layout/notification_fragment" >
+    </fragment>
+
 </navigation>

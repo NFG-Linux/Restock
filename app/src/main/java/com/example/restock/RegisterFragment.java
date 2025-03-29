@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.restock.databinding.FragmentRegisterBinding;
@@ -72,6 +73,11 @@ public class RegisterFragment extends Fragment {
 
         //google auth button listener
         binding.buttonGoogleSignIn.setOnClickListener(v -> startGoogleSignIn());
+
+        //Login link
+        binding.loginLink.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_RegisterFragment_to_LoginFragment);
+        });
     }
 
     private void registerUser(String email, String password) {

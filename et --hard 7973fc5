@@ -1,0 +1,68 @@
+[33m7973fc5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev-angelina[m[33m)[m Implemented Microphone Search Input
+[33m2668320[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mdev[m[33m)[m Replaced/Updated Bar-code Button to a FAB menu.
+[33mac743c4[m had to re-add the addItemToPantry function within BarcodeScannerFragment.java
+[33mcbbb960[m[33m ([m[1;31morigin/dev-austin[m[33m)[m had to re-add the addItemToPantry function within BarcodeScannerFragment.java
+[33me5465a2[m[33m ([m[1;31morigin/dev-dan[m[33m)[m Fixed displaying and adding barcodes to database. Added a pause to the scanner so it doesn't continuously scan once the scanner detects a barcode
+[33m1458b49[m Merge remote-tracking branch 'origin/dev' into dev
+[33m4aa70b0[m Fixed displaying and adding barcodes to database. Added a pause to the scanner so it doesn't continuously scan once the scanner detects a barcode
+[33mde87349[m added database logic to create a document in the pantry_items collection when a barcode is scanned.
+[33mdbaac21[m Merge branch 'dev-austin' into dev
+[33me1ad843[m added database logic to create a document in the pantry_items collection when a barcode is scanned.
+[33mbc231e2[m barcode scanner updates to better integrate with database and input proper info in user_created_barcodes
+[33m875b4ea[m Merge remote-tracking branch 'origin/dev' into dev
+[33mf6519b2[m barcode scanner updates to better integrate with database and input proper info in user_created_barcodes
+[33md9bcd40[m Added links at bottom of login and register fragments.
+[33m6238e0d[m Merge branch 'dev' into dev-austin
+[33m19ee3fe[m Merge remote-tracking branch 'origin/dev' into dev
+[33mad0838f[m Fixed barcode scanner.
+[33m9d27213[m[33m ([m[1;31morigin/dev-angelina[m[33m)[m Header & Footer Switched to fragments from xmls
+[33m28345f3[m Implement back navigation and update fragment layouts
+[33m27c9c27[m Implement header navigation with fragment transitions
+[33m58cb8bb[m Footer/Bottom Nav now has animations on click Files changes and additions: footer_nav, fragment_pantry,  fragment_list,  and fragment_store .xmls MainActivity Added click listeners for navigation icons with animations Added: Added resources directories for anim, animator, and color. In them there are the bounce, nav_icon_click, and footer_icon_selector .xmls Replaced the pngs in footer_nav with svgs
+[33md07c936[m ActivityMain Toolbar update
+[33mfdb1d29[m Merge branch 'dev' into dev-austin
+[33mdf6f4c3[m Minor Changes to the UI that was bothering me. :D
+[33m006a614[m syncing onDestroyView change with my dev-name branch
+[33m26949be[m - also added an onDestroyView method in StoreFragment to prevent memory leaks
+[33me95efdf[m -implemented Google Maps in the StoreFragment.java -modified AndroidManifest.xml for location perms -added location services to app level build.gradle.kts file
+[33m45a3f7d[m ListFragment is now displayed correctly in the emulator
+[33ma25cc56[m merge deconfliction on PantryFragment.java file
+[33md65f661[m Merge branch 'dev-austin' into dev
+[33mdf5f62c[m -implemented firebase datastore for the barcode scanner. -modified nav_graph.xml to include a pantry->barcodescanner action. -modified pantryfragment.java to include bindings/navcontroller and an onDestroyView method. -modified fragment_pantry.xml file to add barcode scanner button (feel free to edit the colors/layout). -added code to barcodescannerfragment.java to implement database(firebase) checks/prompts. -added implementation to app level gradle file. --ran code, barcode scanner launches, but gets a AR background/view. I did get perm prompt, but it didn't load actual camera(TODO)
+[33me503295[m Bottom Navigation (footer_nav) is now implemented
+[33mdca013f[m Fixed Pantry fragment UI not displaying correctly in emulator
+[33mac216e4[m Finished the layout for Store Fragment
+[33m6261963[m Barcode Scanner and overlay
+[33m20fdf49[m Extra layout, drawables, and xml files.
+[33ma9f0928[m Set up Grocery List (or List) screen/fragment layout and item list
+[33mcfbe69a[m Merge branch 'dev' into dev-angelina
+[33m5160ae9[m Added texture view to Barcode fragment and all needed java code for background to be the camera view itself. Also added camera permissions.
+[33me6fb16a[m Merge branch 'dev' into dev-angelina
+[33m28051a9[m Set up Pantry screen layout and item list
+[33mfda0d78[m created Barcode Scanner fragment. no firebase code implemented yet; pushing this so other work can begin on this fragment.
+[33m8649ee0[m created Barcode Scanner fragment. no firebase code implemented yet; pushing this so other work can begin on this fragment.
+[33mb13c8a8[m Merge branch 'refs/heads/dev' into dev-angelina
+[33m8e5313e[m Added google buttons, adjusted ids to match java files so they work.
+[33m5bcd592[m Merge branch 'refs/heads/dev' into dev-angelina
+[33mcd5a1d0[m Log-In layout
+[33me05ef6d[m Merge branch 'refs/heads/dev' into dev-angelina
+[33m00b825b[m Register layout and added custom buttons
+[33mf1f0c9f[m Merge branch 'refs/heads/dev' into dev-angelina
+[33m63d2328[m Implemented Google Authentication Edited Gradle files (remember to sync) Had to change some naming conventions in FirstFragment.java due to changes in the XML file. Updated navigation to include pantry (app will go to pantry screen upon successful login)
+[33m7c3dc65[m Implemented Google Authentication Edited Gradle files (remember to sync) Had to change some naming conventions in FirstFragment.java due to changes in the XML file. Updated navigation to include pantry (app will go to pantry screen upon successful login)
+[33m21110e2[m Onboarding fragment, added logos and fonts.
+[33m29489db[m Merge branch 'dev' into dev-dan
+[33m4c67d41[m Merge branch 'dev' into dev-angelina
+[33me99a2f2[m created Store, Pantry, and List fragments. Store is set up to use google maps, just not configured yet
+[33m2be96b2[m Merge branch 'dev-austin' into dev
+[33m2714b4c[m created Store, Pantry, and List fragments. Store is set up to use google maps, just not configured yet
+[33m3662658[m Merge branch 'dev' into dev-dan
+[33m70610bb[m Merge branch 'dev' into dev-angelina
+[33m7b5da7f[m initial firebase implementation for firebase authentication. renamed SecondFragment.java to RegisterFragment.java, created LoginFragment.java. updated nav_graph.xml for fragment flow.
+[33m6c59f89[m initial firebase implementation for firebase authentication. renamed SecondFragment.java to RegisterFragment.java, created LoginFragment.java. updated nav_graph.xml for fragment flow.
+[33mb97aefc[m Committing
+[33m3cdfe42[m Im Commiting
+[33mdb2ec38[m initial edits for the project :)
+[33mfbcbd1f[m initial edits for the project :)
+[33mb67b391[m initial edits for the project :)
+[33m87c534d[m[33m ([m[1;32mdev-austin[m[33m)[m Initial commit

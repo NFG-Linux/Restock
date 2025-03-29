@@ -7,8 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StoreFragment"
-    android:paddingTop="?attr/actionBarSize">
+    tools:context=".StoreFragment">
 
     <!-- map fragment -->
     <androidx.fragment.app.FragmentContainerView
@@ -23,7 +22,7 @@
 
     <!-- Header -->
     <include
-        layout="@layout/header_navigation"
+        layout="@layout/fragment_header"
         android:id="@+id/header_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,8 +79,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/select_store_button_text"
-            android:background="@color/grey"
-            android:textColor="@color/black"/>
+            android:background="@color/light_grey"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/light_grey"
+            style="@android:style/Widget.Button"/>
 
         <!-- Vertical Divider Between Buttons -->
         <View
@@ -94,9 +95,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/store_produce_button_text"
+            android:text="@string/select_store_button_text"
             android:background="@color/white"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            app:backgroundTint="@color/white"
+            style="@android:style/Widget.Button"/>
 
     </LinearLayout>
 
@@ -120,7 +123,7 @@
         app:layout_constraintTop_toBottomOf="@id/store_buttons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="40dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:gravity="center">
@@ -128,7 +131,7 @@
         <EditText
             android:id="@+id/search_input"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:hint="@string/search_store"
             android:paddingHorizontal="10dp"
@@ -147,7 +150,10 @@
             android:gravity="center"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:paddingVertical="8dp"/>
+            android:paddingVertical="8dp"
+            app:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            style="@android:style/Widget.Button"/>
 
     </LinearLayout>
 
@@ -194,7 +200,7 @@
 
     <!-- Footer -->
     <include
-        layout="@layout/footer_navigation"
+        layout="@layout/fragment_footer"
         android:id="@+id/footer_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

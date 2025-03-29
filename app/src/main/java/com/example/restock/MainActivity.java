@@ -5,21 +5,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+// import android.widget.ImageView;
 //import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+// import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.restock.databinding.ActivityMainBinding;
-import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,43 +31,24 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
-        // Get reference to footer
-        View footer = findViewById(R.id.footer_navigation);
-
         // Set up navigation controller
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 
-        // Listen for navigation changes
+        // Listen for navigation changes to hide/show header & footer
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.FirstFragment ||
+            boolean hideNavigation = (destination.getId() == R.id.FirstFragment ||
                     destination.getId() == R.id.LoginFragment ||
-                    destination.getId() == R.id.RegisterFragment) {
-                footer.setVisibility(View.GONE); // Hide footer on splash, login, and register screens
-            } else {
-                footer.setVisibility(View.VISIBLE); // Show footer everywhere else
-            }                                       // (except whats excluded above, you can do this for the barcode screen as well)
+                    destination.getId() == R.id.RegisterFragment ||
+                    destination.getId() == R.id.profileFragment ||
+                    destination.getId() == R.id.notificationFragment)||
+                    destination.getId() == R.id.BarcodeScannerFragment;
+
+            findViewById(R.id.header_fragment).setVisibility(hideNavigation ? View.GONE : View.VISIBLE);
+            findViewById(R.id.footer_fragment).setVisibility(hideNavigation ? View.GONE : View.VISIBLE);
         });
 
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        findViewById(R.id.footer_pantry).setOnClickListener(view -> navigateToFragment(R.id.pantryFragment));
-        findViewById(R.id.footer_list).setOnClickListener(view -> navigateToFragment(R.id.listFragment));
-        findViewById(R.id.footer_store).setOnClickListener(view -> navigateToFragment(R.id.storeFragment));
-    }
-
-    private void navigateToFragment(int fragmentId) {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        navController.navigate(fragmentId);
     }
 
     @Override
@@ -90,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

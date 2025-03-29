@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- pantry_item_modal_details.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Item Name -->
+        <TextView
+            android:id="@+id/item_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_name_label"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/item_name_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_name_value"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Quantity -->
+        <TextView
+            android:id="@+id/item_quantity_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_quantity_label"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/item_quantity_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_quantity_value"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Ingredients -->
+        <TextView
+            android:id="@+id/item_ingredients_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_ingredients_label"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/item_ingredients_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_ingredients_value"
+            android:layout_marginBottom="12dp"
+            android:maxLines="5"
+            android:ellipsize="end"/>
+
+        <!-- Date Added -->
+        <TextView
+            android:id="@+id/item_date_added_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_date_added_label"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/item_date_added_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_date_added_value"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Barcode -->
+        <TextView
+            android:id="@+id/item_barcode_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_barcode_label"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/item_barcode_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_barcode_value"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Edit Button -->
+        <Button
+            android:id="@+id/edit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_button"/>
+
+    </LinearLayout>
+</ScrollView>

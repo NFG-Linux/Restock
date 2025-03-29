@@ -115,8 +115,7 @@
         android:padding="12dp"
         android:textColorHint="#757575"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_passwordConfirm"
-        />
+        app:layout_constraintTop_toBottomOf="@id/register_passwordConfirm" />
 
     <CheckBox
         android:id="@+id/register_Terms"
@@ -157,7 +156,7 @@
         android:id="@+id/register_RegisterWith"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="@font/inter_18pt_regular"
         android:text="@string/register_OrRegisterWith"
         android:textAlignment="center"
@@ -183,5 +182,22 @@
         app:layout_constraintTop_toBottomOf="@id/register_RegisterWith"
         app:layout_constraintWidth_percent="0.8"
         />
+
+    <TextView
+        android:id="@+id/login_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/inter_18pt_regular"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:text="@string/register_login_link"
+        android:textColor="#0277BD"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonGoogleSignIn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
