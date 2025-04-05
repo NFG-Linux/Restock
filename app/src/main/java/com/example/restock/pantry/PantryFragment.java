@@ -127,7 +127,13 @@ public class PantryFragment extends Fragment {
     }
 
     private void loadUserPantryItems() {
-        String userEmail = auth.getCurrentUser().getEmail();
+        String userEmail;
+        if (auth.getCurrentUser() != null) {
+            userEmail = auth.getCurrentUser().getEmail();
+        } else {
+            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         db.collection("pantry_items")
                 .whereEqualTo("email", userEmail)
@@ -136,6 +142,23 @@ public class PantryFragment extends Fragment {
                     pantryItemList.clear();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         PantryItem item = document.toObject(PantryItem.class);
+
+                        // expiration_date is retrieved
+                        if (document.contains("expiration_date")) {
+                            item.setExpiration_date(document.getString("expiration_date"));
+                        }
+
+                        // ingredients_text is retrieved
+                        if (document.contains("ingredients_text")) {
+                            item.setIngredientsText(document.getString("ingredients_text"));
+                        }
+
+
+                        // Retrieve timestamp field
+                        if (document.contains("timestamp")) {
+                            item.setTimestamp(document.getDate("timestamp")); // Store as Date object
+                        }
+
                         pantryItemList.add(item);
                     }
 
@@ -146,12 +169,19 @@ public class PantryFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e ->
-                    Toast.makeText(getContext(), "Couldn't load pantry items", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(getContext(), "Couldn't load pantry items", Toast.LENGTH_SHORT).show()
                 );
     }
 
     private void searchPantryItems(String searchText) {
-        String userEmail = auth.getCurrentUser().getEmail();
+        String userEmail;
+        if (auth.getCurrentUser() != null) {
+            userEmail = auth.getCurrentUser().getEmail();
+        } else {
+            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (searchText.trim().isEmpty()) {
             loadUserPantryItems();
             return;
